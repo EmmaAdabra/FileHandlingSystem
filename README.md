@@ -9,36 +9,66 @@ The **Student Management System** is a terminal-based Java application designed 
 - **Data Storage**: Student records are stored in a CSV file format for easy data manipulation and retrieval.
 
 ## Project Structure
-```bash
-studentManagementSystem/        # Project root directory
-│ 
-├── src/                        # Source code directory
-│   ├── controller/             # Presentation Layer (handles user input/output)
-│   │   └── AdminController.java # Class to manage admin-related operations
-│   │
-│   ├── services/               # Business Logic Layer
-│   │   ├── StudentService.java  # Interface defining student management operations
-│   │   ├── UserService.java     # Interface defining user management operations
-│   │   ├── StudentServiceImpl.java # Class implementing StudentService
-│   │   └── UserServiceImpl.java    # Class implementing UserService
-│   │
-│   ├── model/                  # Core project logic and entities
-│   │   ├── Student.java         # Class representing a student entity
-│   │   └── User.java            # Class representing an admin user entity
-│   │
-│   ├── repository/             # Data Access Layer
-│   │   ├── StudentRepository.java # Interface defining methods for student data access
-│   │   ├── UserRepository.java    # Interface defining methods for user data access
-│   │   ├── StudentRepositoryImpl.java # Class implementing StudentRepository for CSV operations
-│   │   └── UserRepositoryImpl.java    # Class implementing UserRepository for CSV operations
-│   │
-│   ├── util/                   # Utility classes
-│   │   └── CsvUtils.java       # Helper class for CSV file operations
-│   │
-│   └── App.java                # Main application class to run the program
-│
-└── README.md                   # Project documentation
-```
+
+[//]: # (```bash)
+
+[//]: # (studentManagementSystem/        # Project root directory)
+
+[//]: # (│ )
+
+[//]: # (├── src/                        # Source code directory)
+
+[//]: # (│   ├── controller/             # Presentation Layer &#40;handles user input/output&#41;)
+
+[//]: # (│   │   └── AdminController.java # Class to manage admin-related operations)
+
+[//]: # (│   │)
+
+[//]: # (│   ├── services/               # Business Logic Layer)
+
+[//]: # (│   │   ├── StudentService.java  # Interface defining student management operations)
+
+[//]: # (│   │   ├── UserService.java     # Interface defining user management operations)
+
+[//]: # (│   │   ├── StudentServiceImpl.java # Class implementing StudentService)
+
+[//]: # (│   │   └── UserServiceImpl.java    # Class implementing UserService)
+
+[//]: # (│   │)
+
+[//]: # (│   ├── model/                  # Core project logic and entities)
+
+[//]: # (│   │   ├── Student.java         # Class representing a student entity)
+
+[//]: # (│   │   └── User.java            # Class representing an admin user entity)
+
+[//]: # (│   │)
+
+[//]: # (│   ├── repository/             # Data Access Layer)
+
+[//]: # (│   │   ├── StudentRepository.java # Interface defining methods for student data access)
+
+[//]: # (│   │   ├── UserRepository.java    # Interface defining methods for user data access)
+
+[//]: # (│   │   ├── StudentRepositoryImpl.java # Class implementing StudentRepository for CSV operations)
+
+[//]: # (│   │   └── UserRepositoryImpl.java    # Class implementing UserRepository for CSV operations)
+
+[//]: # (│   │)
+
+[//]: # (│   ├── util/                   # Utility classes)
+
+[//]: # (│   │   └── CsvUtils.java       # Helper class for CSV file operations)
+
+[//]: # (│   │)
+
+[//]: # (│   └── App.java                # Main application class to run the program)
+
+[//]: # (│)
+
+[//]: # (└── README.md                   # Project documentation)
+
+[//]: # (```)
 ## Technologies Used
 - **Java**: The primary programming language used for the application.
 - **CSV File Format**: For data storage and retrieval.
