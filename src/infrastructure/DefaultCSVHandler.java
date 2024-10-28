@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultCSVHandler implements ICSVHandler {
-    private final String FILE_PATH = "students.csv";
+    private final String FILE_PATH = "csv/students.csv";
     private final String CSV_HEADER = "ID,NAME,AGE,COURSE,GPA";
 
     @Override
