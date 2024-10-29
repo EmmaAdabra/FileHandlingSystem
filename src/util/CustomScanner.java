@@ -6,7 +6,7 @@ import java.util.Scanner;
  * This class is used to read users inputs
  */
 public class CustomScanner {
-    private static Scanner scanner = new Scanner(System.in);
+    private final static Scanner scanner = new Scanner(System.in);
     private static ValidateUserInput validate = new ValidateUserInput();
     public static String readString(String prompt){
         String value;
