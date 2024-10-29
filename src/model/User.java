@@ -3,9 +3,19 @@ package model;
 import java.util.Objects;
 
 public class User {
-    private String name;
-    private String email;
-    private String password;
+    private final String name;
+    private final String email;
+    private final String password;
+    private boolean isOnline = false;
+
+    public void login() {
+        isOnline = true;
+    }
+
+    public void logout() {
+        isOnline = false;
+    }
+
 
     public User(String name, String email, String password) {
         this.name = name;
