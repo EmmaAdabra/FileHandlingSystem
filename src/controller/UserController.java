@@ -46,11 +46,12 @@ public class UserController {
     }
 
     protected void displayMenu(){
+        String userDetails = currentUSer.getName() + " (" + currentUSer.getEmail() + ")";
         String heading = "--------------- Main Menu ---------------";
         String[] menuOptions = new String[]{"View Registered Users", "Register User", "Logout"};
 
         while (currentUSer.isOnline()) {
-            DisplayHelpers.displayMenu(heading, menuOptions, "");
+            DisplayHelpers.displayMenu(heading, menuOptions, userDetails);
             int userOption = IterateInput.intInput("Option", 1,
                     menuOptions.length, validate::validateUserOption);
 
