@@ -19,7 +19,7 @@ public class UserServices implements IUserServices {
     public boolean addUser(User newUser) {
         var user = userRepository.getUser(newUser.getEmail());
 
-        if(user == newUser) {
+        if(user == null) {
             userRepository.addUser(newUser);
             return true;
         }
