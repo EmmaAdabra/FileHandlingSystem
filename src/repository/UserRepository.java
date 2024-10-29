@@ -7,4 +7,20 @@ import java.util.List;
 
 public class UserRepository implements IUserRepository {
     private List<User> users = new ArrayList<>();
+
+    @Override
+    public User getUser(String email) {
+        for(User user : users) {
+            if(user.getEmail().equalsIgnoreCase(email)) {
+                return user;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public void addUser(User newUser) {
+        users.add(newUser);
+    }
 }
