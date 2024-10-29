@@ -46,19 +46,18 @@ public class UserController {
     }
 
     public void displayMenu(){
-        boolean running = true;
         String heading = "--------------- Main Menu ---------------";
-        String[] menuOptions = new String[]{"View Registered Users", "Exit"};
+        String[] menuOptions = new String[]{"View Registered Users", "Register User", "Exit"};
 
-        while (running) {
+        while (true) {
             DisplayHelpers.displayMenu(heading, menuOptions, "");
             int userOption = IterateInput.intInput("Option", 1,
                     menuOptions.length, validate::validateUserOption);
 
             switch (userOption) {
                 case 1 -> viewUsers();
-                case 2 -> {
-                    running = false;
+                case 2 -> signUp();
+                case 3 -> {
                     System.exit(0);
                 }
             }
@@ -74,5 +73,9 @@ public class UserController {
         } else {
             System.out.println("No register user");
         }
+    }
+
+    public void registerUsers(){
+        signUp();
     }
 }
