@@ -47,9 +47,9 @@ public class UserController {
 
     protected void displayMenu(){
         String heading = "--------------- Main Menu ---------------";
-        String[] menuOptions = new String[]{"View Registered Users", "Register User", "Exit"};
+        String[] menuOptions = new String[]{"View Registered Users", "Register User", "Logout"};
 
-        while (true) {
+        while (currentUSer.isOnline()) {
             DisplayHelpers.displayMenu(heading, menuOptions, "");
             int userOption = IterateInput.intInput("Option", 1,
                     menuOptions.length, validate::validateUserOption);
@@ -57,9 +57,7 @@ public class UserController {
             switch (userOption) {
                 case 1 -> viewUsers();
                 case 2 -> registerUsers();
-                case 3 -> {
-                    System.exit(0);
-                }
+                case 3 -> logout();
             }
         }
     }
@@ -77,5 +75,19 @@ public class UserController {
 
     protected void registerUsers(){
         signUp();
+    }
+
+    protected void handleLogin(User user) {
+        user.login();
+        this.currentUSer = user;
+        displayMenu();
+    }
+
+    protected void logout() {
+        if(currentUSer != null && currentUSer.isOnline()) {
+            currentUSer.logout();
+        } else {
+            System.out.println("You are have already logout");;
+        }
     }
 }
