@@ -1,3 +1,4 @@
+import controller.AuthController;
 import controller.UserController;
 import infrastructure.DefaultCSVHandler;
 import infrastructure.ICSVHandler;
@@ -7,6 +8,8 @@ import repository.IUserRepository;
 import repository.StudentRepository;
 import repository.UserRepository;
 import util.CSVHelpers;
+import util.DisplayHelpers;
+import util.IterateInput;
 import util.ValidateUserInput;
 
 import java.util.List;
@@ -17,8 +20,24 @@ public class App {
         IUserRepository userRepository = new UserRepository();
         IStudentRepository studentRepository = new StudentRepository();
         var userController = new UserController(validateUserInput, userRepository, studentRepository);
+        var authController = new AuthController(validateUserInput, userRepository, userController);
 
-        userController.signUp();
-        userController.displayMenu();
+        System.out.println();
+        System.out.println("                  STUDENT MANAGEMENT SYSTEM                   ");
+        String heading = "---------------- Sign up / Login ---------------";
+        String[] menuOptions = new String[]{"Sign up", "Login", "Exit"};
+
+        while (true) {
+            DisplayHelpers.displayMenu(heading, menuOptions, "");
+            int option = IterateInput.intInput("Option", 1, 3, validateUserInput::validateUserOption);
+
+            switch (option){
+                case 1 -> userController.signUp();
+                case 2 -> authController.login();
+                case 3 -> {
+                    System.exit(0);
+                }
+            }
+        }
     }
 }
