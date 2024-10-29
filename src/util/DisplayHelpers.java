@@ -1,5 +1,9 @@
 package util;
 
+import model.User;
+
+import java.util.List;
+
 public class DisplayHelpers {
     public static void displayMenu(String title, String[] options, String userDetails){
         System.out.println();
@@ -21,5 +25,15 @@ public class DisplayHelpers {
             System.out.println(i+1 + ". " + options[i]);
         }
         System.out.println();
+    }
+
+    public static void displayUsers(List<User> users) {
+        for(int i = 0; i < users.size(); i++) {
+            System.out.println(users.get(i));
+
+            if(i != (users.size() - 1)) {
+                System.out.println();
+            }
+        }
     }
 }
