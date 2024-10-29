@@ -4,6 +4,8 @@ import model.User;
 import repository.IStudentRepository;
 import repository.IUserRepository;
 
+import java.util.List;
+
 public class UserServices implements IUserServices {
     IStudentRepository studentRepository;
     IUserRepository userRepository;
@@ -23,6 +25,11 @@ public class UserServices implements IUserServices {
         }
 
         return false;
+    }
+
+    @Override
+    public List<User> getUsers() {
+        return userRepository.getAllUsers();
     }
 }
 
