@@ -4,12 +4,11 @@ import java.util.function.Function;
 
 
 public class IterateInput {
-    static CustomScanner scanner = new CustomScanner();
     static public String stringInput(String prompt, Function<String, Response> validate) {
         String value;
         Response response;
         while (true) {
-            value = scanner.readString(prompt);
+            value = CustomScanner.readString(prompt);
             response = validate.apply(value);
             if (response.status)
                 break;
@@ -23,7 +22,7 @@ public class IterateInput {
         int option;
         Response response;
         while (true) {
-            option = scanner.readInt(prompt);
+            option = CustomScanner.readInt(prompt);
             response = validate.apply(option, min, max);
             if (response.status)
                 break;
