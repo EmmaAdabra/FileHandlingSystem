@@ -1,4 +1,4 @@
 package services;
 
-public class IAuthServices {
+public interface IAuthServices {
 }
