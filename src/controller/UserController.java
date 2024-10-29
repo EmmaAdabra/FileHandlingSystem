@@ -5,8 +5,11 @@ import repository.IStudentRepository;
 import repository.IUserRepository;
 import services.IUserServices;
 import services.UserServices;
+import util.DisplayHelpers;
 import util.IterateInput;
 import util.ValidateUserInput;
+
+import java.util.List;
 
 public class UserController {
     User currentUSer;
@@ -34,10 +37,42 @@ public class UserController {
 //       register user
         boolean register = userServices.addUser(newUser);
 
+        System.out.println();
         if(register) {
             System.out.println(newUser.getName() + " have been registered successfully");
         } else {
             System.out.println(newUser.getEmail() + " already exist");
+        }
+    }
+
+    public void displayMenu(){
+        boolean running = true;
+        String heading = "--------------- Main Menu ---------------";
+        String[] menuOptions = new String[]{"View Registered Users", "Exit"};
+
+        while (running) {
+            DisplayHelpers.displayMenu(heading, menuOptions, "");
+            int userOption = IterateInput.intInput("Option", 1,
+                    menuOptions.length, validate::validateUserOption);
+
+            switch (userOption) {
+                case 1 -> viewUsers();
+                case 2 -> {
+                    running = false;
+                    System.exit(0);
+                }
+            }
+        }
+    }
+
+    public void viewUsers() {
+        System.out.println();
+        List<User> users = userServices.getUsers();
+
+        if(users.size() > 0) {
+            DisplayHelpers.displayUsers(users);
+        } else {
+            System.out.println("No register user");
         }
     }
 }
