@@ -45,7 +45,7 @@ public class UserController {
         }
     }
 
-    public void displayMenu(){
+    protected void displayMenu(){
         String heading = "--------------- Main Menu ---------------";
         String[] menuOptions = new String[]{"View Registered Users", "Register User", "Exit"};
 
@@ -56,7 +56,7 @@ public class UserController {
 
             switch (userOption) {
                 case 1 -> viewUsers();
-                case 2 -> signUp();
+                case 2 -> registerUsers();
                 case 3 -> {
                     System.exit(0);
                 }
@@ -64,7 +64,7 @@ public class UserController {
         }
     }
 
-    public void viewUsers() {
+    protected void viewUsers() {
         System.out.println();
         List<User> users = userServices.getUsers();
 
@@ -75,7 +75,7 @@ public class UserController {
         }
     }
 
-    public void registerUsers(){
+    protected void registerUsers(){
         signUp();
     }
 }
