@@ -10,8 +10,27 @@ import java.util.regex.Pattern;
 public class ValidateUserInput {
 
     public Response validateName(String name) {
-        if(!(name.length() >= 3 && name.length() <= 20)){
-            return new Response(false, "username should be min 3 and max 20 character", null);
+        final String alphabet = "abcdefghijklmnopqrstuvwxyz";
+        final String tempName = name.replace(" ", "").toLowerCase();
+
+        if((name.length() < 2 || name.length() > 20)){
+            return new Response(false, "username should be min 2 and max 20 character", null);
+        }
+
+        for(char letter : tempName.toCharArray()) {
+            if(alphabet.indexOf(letter) == -1) {
+                return new Response(false,
+                        "Illegal character found, name should only contain [Aa-zZ]", null);
+            }
+        }
+
+//        final Pattern NAME_PATTERN = Pattern.compile("^[Aa-zZ]{1,19}\\s([Aa-zZ]{0,19})$");
+        final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z]{2,20}\\s[A-Za-z]{1,20}$");
+        Matcher matcher = NAME_PATTERN.matcher(name);
+        System.out.println(matcher.matches());
+
+        if(!matcher.matches()) {
+            return new Response(false, "Name format: 'John Doe' or 'john d' case don't matter", null);
         }
         return new Response(true, "success", null);
     }
