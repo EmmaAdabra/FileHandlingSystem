@@ -1,6 +1,7 @@
 package services;
 
 import infrastructure.DefaultCSVHandler;
+import model.Student;
 import model.User;
 import repository.IStudentRepository;
 import repository.IUserRepository;
@@ -45,6 +46,11 @@ public class UserServices implements IUserServices {
         }
 
         return response;
+    }
+
+    @Override
+    public List<Student> getStudents() {
+        return studentRepository.getStudents();
     }
 }
 
