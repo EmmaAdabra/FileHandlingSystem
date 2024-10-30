@@ -53,12 +53,9 @@ public class DefaultCSVHandler implements ICSVHandler {
                     }
                 }
             }
-        } catch (FileNotFoundException e) {
-            return new Response(false, e.getMessage(), null);
         } catch (IOException e) {
             return new Response(false, e.getMessage(), null);
         }
-
 
         return new Response(true, "success", students);
     }
