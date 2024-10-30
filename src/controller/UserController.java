@@ -72,6 +72,7 @@ public class UserController {
             System.out.println("--------------- Choose CSV Handler ---------------");
             System.out.println("1. Default CSV Handler");
             System.out.println("2. CSV API Handler (coming soon)");
+            System.out.println();
             int option = IterateInput.intInput("Option", 1, 3, validate::validateUserOption);
 
             switch (option) {
@@ -176,11 +177,11 @@ public class UserController {
         System.out.println();
         System.out.println("--------------- Add New Student ---------------");
         System.out.println();
-        String name = CustomScanner.readString("Name");
+        String name = IterateInput.stringInput("Name", validate::validateName);
         int age = CustomScanner.readInt("Age");
         String course = CustomScanner.readString("Course");
         double gpa = CustomScanner.readDouble("GPA");
-        String id = "" + userServices.getUsers().size() + 1;
+        String id = GenerateID.generateID(name, userServices.getStudents().size());
 
         var newStudent = new Student(id, name, age, course, gpa);
 
