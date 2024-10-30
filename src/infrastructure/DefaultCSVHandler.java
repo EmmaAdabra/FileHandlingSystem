@@ -40,6 +40,22 @@ public class DefaultCSVHandler implements ICSVHandler {
         List<Student> students = new ArrayList<>();
         boolean firstRow = true;
 
+        if(!CSVHelpers.fileExist(FILE_PATH)) {
+            try {
+                CSVHelpers.createFile(FILE_PATH);
+                return new Response(true, FILE_PATH
+                        + " file have been created successfully", new ArrayList<>());
+
+            } catch (IOException e) {
+                return new Response(false, e.getMessage(), null);
+            }
+        }
+
+        if(CSVHelpers.isEmpty(FILE_PATH)){
+            return new Response(true, FILE_PATH
+                    + " loaded successfully (no student records found)", new ArrayList<>());
+        }
+
         try (var csvReader = new BufferedReader(new FileReader(FILE_PATH))) {
             String studentRecord;
 
@@ -57,7 +73,8 @@ public class DefaultCSVHandler implements ICSVHandler {
             return new Response(false, e.getMessage(), null);
         }
 
-        return new Response(true, "success", students);
+        return new Response(true, FILE_PATH + " loaded successfully, with"
+                + students.size() + " student records", students);
     }
 
     @Override
