@@ -13,12 +13,15 @@ public class CSVHelpers {
 //   Note: modify this logic
     public static boolean createFile(String filePath) throws IOException {
         File file = new File(filePath);
+        File parentDir = file.getParentFile();
 
-        if(file.getParentFile().mkdir() || file.getParentFile().exists()) {
-            return file.createNewFile();
+        if(parentDir != null) {
+            if(!parentDir.mkdir() && parentDir.exists()) {
+                throw new IOException("Error occur creating directory: " + parentDir.getAbsolutePath());
+            }
         }
 
-        return true;
+        return file.createNewFile();
     }
 
     public static boolean isEmpty(String file_path) {
