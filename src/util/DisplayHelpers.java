@@ -30,7 +30,7 @@ public class DisplayHelpers {
 
     public static void displayObjects(List<?> obj) {
         for(int i = 0; i < obj.size(); i++) {
-            System.out.println(obj.get(i));
+            System.out.println(i+1 + ". " + obj.get(i));
 
             if(i != (obj.size() - 1)) {
                 System.out.println();
