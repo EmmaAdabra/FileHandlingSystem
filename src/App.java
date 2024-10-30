@@ -18,8 +18,7 @@ public class App {
     public static void main(String[] args) {
         var validateUserInput = new ValidateUserInput();
         IUserRepository userRepository = new UserRepository();
-        IStudentRepository studentRepository = new StudentRepository();
-        var userController = new UserController(validateUserInput, userRepository, studentRepository);
+        var userController = new UserController(validateUserInput, userRepository);
         var authController = new AuthController(validateUserInput, userRepository, userController);
 
         System.out.println();
