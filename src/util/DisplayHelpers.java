@@ -3,6 +3,7 @@ package util;
 import model.User;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DisplayHelpers {
     public static void displayMenu(String title, String[] options, String userDetails){
@@ -27,11 +28,11 @@ public class DisplayHelpers {
         System.out.println();
     }
 
-    public static void displayUsers(List<User> users) {
-        for(int i = 0; i < users.size(); i++) {
-            System.out.println(users.get(i));
+    public static void displayObjects(List<?> obj) {
+        for(int i = 0; i < obj.size(); i++) {
+            System.out.println(obj.get(i));
 
-            if(i != (users.size() - 1)) {
+            if(i != (obj.size() - 1)) {
                 System.out.println();
             }
         }
