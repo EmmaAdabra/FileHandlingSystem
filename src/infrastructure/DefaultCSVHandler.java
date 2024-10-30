@@ -73,8 +73,7 @@ public class DefaultCSVHandler implements ICSVHandler {
             return new Response(false, e.getMessage(), null);
         }
 
-        return new Response(true, FILE_PATH + " loaded successfully, with"
-                + students.size() + " student records", students);
+        return new Response(true, FILE_PATH + " loaded successfully", students);
     }
 
     @Override
