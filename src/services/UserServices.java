@@ -52,5 +52,16 @@ public class UserServices implements IUserServices {
     public List<Student> getStudents() {
         return studentRepository.getStudents();
     }
+
+    @Override
+    public boolean addStudent(Student newStudent) {
+        if(!studentRepository.isStudent(newStudent)) {
+            studentRepository.addStudent(newStudent);
+
+            return true;
+        }
+
+        return false;
+    }
 }
 
