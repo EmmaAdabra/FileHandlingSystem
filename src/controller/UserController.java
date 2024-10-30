@@ -1,7 +1,7 @@
 package controller;
 
+import model.Student;
 import model.User;
-import repository.IStudentRepository;
 import repository.IUserRepository;
 import services.IUserServices;
 import services.UserServices;
@@ -17,6 +17,7 @@ public class UserController {
     public UserController(ValidateUserInput validate, IUserRepository userRepository) {
         this.validate = validate;
         this.userServices = new UserServices(userRepository);
+
     }
 
     public void signUp(){
@@ -124,7 +125,7 @@ public class UserController {
     protected void displayMenu(){
         String userDetails = currentUSer.getName() + " (" + currentUSer.getEmail() + ")";
         String heading = "--------------- Main Menu ---------------";
-        String[] menuOptions = new String[]{"View Registered Users", "Register User", "Logout"};
+        String[] menuOptions = new String[]{"View Students", "View Registered Users", "Register User", "Logout"};
 
         while (currentUSer.isOnline()) {
             DisplayHelpers.displayMenu(heading, menuOptions, userDetails);
@@ -132,25 +133,41 @@ public class UserController {
                     menuOptions.length, validate::validateUserOption);
 
             switch (userOption) {
-                case 1 -> viewUsers();
-                case 2 -> registerUsers();
-                case 3 -> logout();
+                case 1 -> viewStudents();
+                case 2 -> viewUsers();
+                case 3 -> registerUsers();
+                case 4 -> logout();
             }
         }
     }
 
     protected void viewUsers() {
         System.out.println();
+        System.out.println("--------------- Registered Users ---------------");
+        System.out.println();
         List<User> users = userServices.getUsers();
 
         if(users.size() > 0) {
-            DisplayHelpers.displayUsers(users);
+            DisplayHelpers.displayObjects(users);
         } else {
             System.out.println("No register user");
         }
     }
 
-    protected void registerUsers(){
+    protected void registerUsers() {
         signUp();
+    }
+
+    protected void viewStudents() {
+        System.out.println();
+        System.out.println("--------------- All students ---------------");
+        System.out.println();
+        List<Student> students =  userServices.getStudents();
+
+        if(students.size() > 0) {
+            DisplayHelpers.displayObjects(students);
+        } else {
+            System.out.println("No student found");
+        }
     }
 }
