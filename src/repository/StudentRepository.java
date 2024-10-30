@@ -28,4 +28,9 @@ public class StudentRepository implements IStudentRepository  {
         }
         return response;
     }
+
+    @Override
+    public List<Student> getStudents() {
+        return students;
+    }
 }
