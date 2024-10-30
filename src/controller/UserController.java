@@ -110,7 +110,7 @@ public class UserController {
         }
 
         System.out.println();
-        System.out.println("csv/students.csv loaded successfully");
+        System.out.println(response.message);
         return true;
     }
 
@@ -125,7 +125,7 @@ public class UserController {
     protected void displayMenu(){
         String userDetails = currentUSer.getName() + " (" + currentUSer.getEmail() + ")";
         String heading = "--------------- Main Menu ---------------";
-        String[] menuOptions = new String[]{"View Students", "View Registered Users", "Register User", "Logout"};
+        String[] menuOptions = new String[]{"Add Student", "View Students", "View Registered Users", "Register User", "Logout"};
 
         while (currentUSer.isOnline()) {
             DisplayHelpers.displayMenu(heading, menuOptions, userDetails);
@@ -133,10 +133,11 @@ public class UserController {
                     menuOptions.length, validate::validateUserOption);
 
             switch (userOption) {
-                case 1 -> viewStudents();
-                case 2 -> viewUsers();
-                case 3 -> registerUsers();
-                case 4 -> logout();
+                case 1 -> addStudent();
+                case 2 -> viewStudents();
+                case 3 -> viewUsers();
+                case 4 -> registerUsers();
+                case 5 -> logout();
             }
         }
     }
@@ -169,5 +170,27 @@ public class UserController {
         } else {
             System.out.println("No student found");
         }
+    }
+
+    protected void addStudent(){
+        System.out.println();
+        System.out.println("--------------- Add New Student ---------------");
+        System.out.println();
+        String name = CustomScanner.readString("Name");
+        int age = CustomScanner.readInt("Age");
+        String course = CustomScanner.readString("Course");
+        double gpa = CustomScanner.readDouble("GPA");
+        String id = "" + userServices.getUsers().size() + 1;
+
+        var newStudent = new Student(id, name, age, course, gpa);
+
+        System.out.println();
+        if(userServices.addStudent(newStudent)){
+            System.out.println("Student added successfully");
+        }
+        else {
+            System.out.println("Student already exist");
+        }
+        id = "";
     }
 }
