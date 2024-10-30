@@ -10,15 +10,15 @@ public class CSVHelpers {
         return file.exists();
     }
 
-    public static Response createFile(String filePath) {
-        try {
-            File file = new File(filePath);
-            file.createNewFile();
-        } catch (IOException e) {
-            return new Response(false, e.getMessage(), null);
+//   Note: modify this logic
+    public static boolean createFile(String filePath) throws IOException {
+        File file = new File(filePath);
+
+        if(file.getParentFile().mkdir() || file.getParentFile().exists()) {
+            return file.createNewFile();
         }
 
-        return new Response(true, "success", null);
+        return true;
     }
 
     public static boolean isEmpty(String file_path) {
