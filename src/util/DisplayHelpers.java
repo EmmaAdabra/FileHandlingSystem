@@ -8,7 +8,7 @@ import java.util.Objects;
 public class DisplayHelpers {
     public static void displayMenu(String title, String[] options, String userDetails){
         System.out.println();
-        if(userDetails != ""){
+        if(userDetails.length() > 1){
             System.out.println(userDetails);
         }
         System.out.println(title);
