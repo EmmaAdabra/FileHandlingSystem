@@ -49,4 +49,31 @@ public class CustomScanner {
         }
         return option;
     }
+
+    public static double readDouble(String prompt){
+        double option;
+
+        while (true) {
+            System.out.print(prompt +": ");
+            String userOption = scanner.nextLine().trim();
+
+            if(validate.validateEmptyInput(userOption)){
+                System.out.println(prompt + " can't be empty");
+                continue;
+            }
+
+            var response = validate.validateDoubletInput(userOption);
+
+            if(!response.status) {
+                System.out.println("Only accept numbers");
+                continue;
+            }
+
+            option = (Integer) response.obj;
+
+            break;
+        }
+
+        return option;
+    }
 }
