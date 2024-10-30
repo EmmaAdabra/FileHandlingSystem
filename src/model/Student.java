@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class Student {
     String id;
     String name;
@@ -20,6 +22,19 @@ public class Student {
     public String toString() {
         return "Student ID: " + id + ", Name: " + name + ", Age: " + age +
                 ", Course: " + course + ", GPA: " + gpa;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Student student)) return false;
+        return getAge() == student.getAge() && getName().equals(student.getName()) && getCourse().equals(student.getCourse());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getAge(), getCourse());
     }
 
     public String getId() {
