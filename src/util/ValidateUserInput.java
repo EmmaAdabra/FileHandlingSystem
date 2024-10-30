@@ -24,10 +24,8 @@ public class ValidateUserInput {
             }
         }
 
-//        final Pattern NAME_PATTERN = Pattern.compile("^[Aa-zZ]{1,19}\\s([Aa-zZ]{0,19})$");
         final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z]{2,20}\\s[A-Za-z]{1,20}$");
         Matcher matcher = NAME_PATTERN.matcher(name);
-        System.out.println(matcher.matches());
 
         if(!matcher.matches()) {
             return new Response(false, "Name format: 'John Doe' or 'john d' case don't matter", null);
