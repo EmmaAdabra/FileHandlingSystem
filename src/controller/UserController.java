@@ -5,9 +5,7 @@ import repository.IStudentRepository;
 import repository.IUserRepository;
 import services.IUserServices;
 import services.UserServices;
-import util.DisplayHelpers;
-import util.IterateInput;
-import util.ValidateUserInput;
+import util.*;
 
 import java.util.List;
 
@@ -16,10 +14,9 @@ public class UserController {
     ValidateUserInput validate;
     IUserServices userServices;
 
-    public UserController(ValidateUserInput validate, IUserRepository userRepository,
-                          IStudentRepository studentRepository) {
+    public UserController(ValidateUserInput validate, IUserRepository userRepository) {
         this.validate = validate;
-        this.userServices = new UserServices(studentRepository, userRepository);
+        this.userServices = new UserServices(userRepository);
     }
 
     public void signUp(){
@@ -43,6 +40,85 @@ public class UserController {
         } else {
             System.out.println(newUser.getEmail() + " already exist");
         }
+    }
+
+    protected void handleLogin(User user) {
+        user.login();
+        this.currentUSer = user;
+        if(chooseCSVHandler()) {
+            displayMenu();
+        } else {
+            System.exit(1);
+        }
+    }
+
+    protected void logout() {
+        if(currentUSer != null && currentUSer.isOnline()) {
+            currentUSer.logout();
+        } else {
+            System.out.println("You are have already logout");;
+        }
+    }
+
+    protected boolean chooseCSVHandler(){
+        final String MAIN_CSV_HANDLER = "main";
+        final String API_CSV_HANDLER = "api";
+        boolean csvHandlerNotSelected = true;
+        Response response = null;
+
+        while (csvHandlerNotSelected) {
+            System.out.println();
+            System.out.println("--------------- Choose CSV Handler ---------------");
+            System.out.println("1. Default CSV Handler");
+            System.out.println("2. CSV API Handler (coming soon)");
+            int option = IterateInput.intInput("Option", 1, 3, validate::validateUserOption);
+
+            switch (option) {
+                case 1 -> {
+                    response = userServices.setCSVHandler(MAIN_CSV_HANDLER);
+                }
+                case 2 -> {
+                    System.out.println();
+                    System.out.println("API CSV Handler Coming soon");
+                }
+            }
+
+//            Note: modify logic later
+            if(response != null) {
+                if(response.status) {
+                    csvHandlerNotSelected = false;
+                } else {
+                    System.out.println();
+                    System.out.println("Error occur loading students csv file:\n" + response.message);
+
+                    int opt = chooseCSVHandlerHelper();
+
+                    switch (opt) {
+                        case 1 -> {
+                            return false;
+                        }
+
+                        case 2 -> {
+                            System.out.println();
+                            System.out.println("No other available CSV Handler");
+                            chooseCSVHandlerHelper();
+                        }
+                    }
+                }
+            }
+        }
+
+        System.out.println();
+        System.out.println("csv/students.csv loaded successfully");
+        return true;
+    }
+
+    private int chooseCSVHandlerHelper(){
+        System.out.println();
+        System.out.println("1. Exit Program");
+        System.out.println("2. Try a different csv handler");
+
+        return  CustomScanner.readInt("Option");
     }
 
     protected void displayMenu(){
@@ -76,19 +152,5 @@ public class UserController {
 
     protected void registerUsers(){
         signUp();
-    }
-
-    protected void handleLogin(User user) {
-        user.login();
-        this.currentUSer = user;
-        displayMenu();
-    }
-
-    protected void logout() {
-        if(currentUSer != null && currentUSer.isOnline()) {
-            currentUSer.logout();
-        } else {
-            System.out.println("You are have already logout");;
-        }
     }
 }
