@@ -69,7 +69,7 @@ public class CustomScanner {
                 continue;
             }
 
-            option = (Integer) response.obj;
+            option = (Double) response.obj;
 
             break;
         }
