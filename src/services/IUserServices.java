@@ -11,5 +11,6 @@ public interface IUserServices {
     List<User> getUsers();
     Response setCSVHandler(String handler);
     List<Student> getStudents();
+    boolean addStudent(Student newStudent);
 }
 
