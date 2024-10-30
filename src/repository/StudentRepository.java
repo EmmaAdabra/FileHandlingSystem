@@ -24,7 +24,7 @@ public class StudentRepository implements IStudentRepository  {
 //            Note: modify logic later
             List<Student> studentRecords = (List<Student>) response.obj;
             students.addAll(studentRecords);
-            return new Response(true, "success", null);
+            return new Response(true, response.message, null);
         }
         return response;
     }
@@ -32,5 +32,16 @@ public class StudentRepository implements IStudentRepository  {
     @Override
     public List<Student> getStudents() {
         return students;
+    }
+
+    @Override
+    public void addStudent(Student student) {
+        students.add(student);
+        csvHandler.addStudentToCSV(student);
+    }
+
+    @Override
+    public boolean isStudent(Student student) {
+        return students.contains(student);
     }
 }
