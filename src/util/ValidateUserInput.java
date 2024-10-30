@@ -55,4 +55,15 @@ public class ValidateUserInput {
         }
         return new Response(true, "valid value", result);
     }
+
+    public Response validateDoubletInput(String input) {
+        double result;
+
+        try {
+            result = Double.parseDouble(input);
+        } catch (NumberFormatException e) {
+            return new Response(false, "only accept numbers", null);
+        }
+        return new Response(true, "valid value", result);
+    }
 }
