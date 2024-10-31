@@ -182,7 +182,7 @@ public class UserController {
         int age = CustomScanner.readInt("Age");
         String course = CustomScanner.readString("Course");
         double gpa = CustomScanner.readDouble("GPA");
-        String id = GenerateID.generateID(name, userServices.getStudents().size());
+        String id = GenerateID.generateID(name, userServices.getStudents());
 
         var newStudent = new Student(id, name, age, course, gpa);
 
