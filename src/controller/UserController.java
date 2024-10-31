@@ -57,7 +57,7 @@ public class UserController {
         if(currentUSer != null && currentUSer.isOnline()) {
             currentUSer.logout();
         } else {
-            System.out.println("You are have already logout");;
+            System.out.println("You are have already logout");
         }
     }
 
@@ -76,9 +76,7 @@ public class UserController {
             int option = IterateInput.intInput("Option", 1, 3, validate::validateUserOption);
 
             switch (option) {
-                case 1 -> {
-                    response = userServices.setCSVHandler(MAIN_CSV_HANDLER);
-                }
+                case 1 -> response = userServices.setCSVHandler(MAIN_CSV_HANDLER);
                 case 2 -> {
                     System.out.println();
                     System.out.println("API CSV Handler Coming soon");
@@ -124,9 +122,9 @@ public class UserController {
     }
 
     protected void displayMenu(){
-        String userDetails = currentUSer.getName() + " (" + currentUSer.getEmail() + ")";
+//        String userDetails = currentUSer.getName() + " (" + currentUSer.getEmail() + ")";
         String heading = "--------------- Main Menu ---------------";
-        String[] menuOptions = new String[]{"Add Student", "View Students",
+        String[] menuOptions = new String[]{"Add Student", "View Students", "Edit Student Details",
                 "View Registered Users", "Register User", "Logout"};
 
         while (currentUSer.isOnline()) {
@@ -137,9 +135,10 @@ public class UserController {
             switch (userOption) {
                 case 1 -> addStudent();
                 case 2 -> viewStudents();
-                case 3 -> viewUsers();
-                case 4 -> registerUsers();
-                case 5 -> logout();
+                case 3 -> editStudentDetails();
+                case 4 -> viewUsers();
+                case 5 -> registerUsers();
+                case 6 -> logout();
             }
         }
     }
@@ -193,6 +192,71 @@ public class UserController {
         else {
             System.out.println("Student already exist");
         }
-        id = "";
+    }
+
+    protected void editStudentDetails(){
+        System.out.println();
+        String heading = "--------------- Edit Student Details ---------------";
+        DisplayHelpers.displaySubMenu(heading, new String[]{"Get Student By ID", "Get Student By Name"});
+
+        int option = IterateInput.intInput("Option", 1, 2, validate::validateUserOption);
+
+        switch (option) {
+            case 1 -> handleEditStudentByID();
+            case 2 -> System.out.println("Coming soon");
+
+        }
+    }
+
+    private void handleEditStudentByID() {
+        String studentID = IterateInput.stringInput("Student ID", validate::validateStudentID);
+        Student student = userServices.getStudentByID(studentID).orElse(null);
+        editStudentHelper(student);
+    }
+
+    private void editStudentHelper(Student student) {
+        System.out.println();
+        System.out.println("Student Details: [" +student + "]");
+        String heading = "--------------- Select option to be edited ---------------";
+        String[] options = new String[]{"Name", "Course", "Age", "GPA", "Main Menu"};
+        boolean whileOnEdit = true;
+        while (whileOnEdit){
+            DisplayHelpers.displaySubMenu(heading, options);
+            int option = IterateInput.intInput("Option", 1, options.length,
+                    validate::validateUserOption);
+            System.out.println();
+
+            switch (option) {
+                case 1 -> {
+                    student.setName(IterateInput.stringInput("New Name",
+                            validate::validateName));
+                    System.out.println("Student name updated successfully");
+                }
+
+                case 2 -> {
+                    student.setCourse(CustomScanner.readString("New Course"));
+                    System.out.println("Student course updated successfully");
+                }
+
+                case 3 -> {
+                    student.setAge(CustomScanner.readInt("New Age"));
+                    System.out.println("Student age updated successfully");
+                }
+
+                case 4 -> {
+                    student.setGpa(CustomScanner.readDouble("New GPA"));
+                    System.out.println("Student GPA updated successfully");
+                }
+
+                case 5 -> {
+                    var response = userServices.updateStudentRecord();
+                    if(!response.status) {
+                        System.out.println(response.message);
+                    }
+
+                    whileOnEdit = false;
+                }
+            }
+        }
     }
 }
