@@ -6,7 +6,7 @@ import java.util.List;
 
 public class GenerateID {
     public static String generateID(String name, List<Student> students){
-        int studentSize = students.size();
+        int studentSize = students.size() + 1;
 
         if(name == null) {
             return null;
