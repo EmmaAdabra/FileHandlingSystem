@@ -6,6 +6,7 @@ import util.Response;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class StudentRepository implements IStudentRepository  {
     private final ICSVHandler csvHandler;
@@ -43,5 +44,15 @@ public class StudentRepository implements IStudentRepository  {
     @Override
     public boolean isStudent(Student student) {
         return students.contains(student);
+    }
+
+    @Override
+    public Optional<Student> getStudentByID(String id) {
+        return students.stream().filter(student -> student.getId().equals(id)).findFirst();
+    }
+
+    @Override
+    public Response updateStudentRecord() {
+        return csvHandler.writeAllStudentsToCSV(students);
     }
 }
