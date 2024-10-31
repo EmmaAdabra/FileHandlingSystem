@@ -5,6 +5,18 @@ import model.Student;
 import java.util.List;
 
 public class GenerateID {
+    private static String computeID(String nameInitial, int studentSize){
+        int IDNumber = (studentSize * 10) / 10;
+
+        String numberPartOfID = IDNumber < 10 ? "00"+studentSize : IDNumber < 100 ? "0" + studentSize:
+                "" + studentSize;
+
+        return nameInitial + numberPartOfID;
+    }
+
+    private static boolean isIDExists(String id, List<Student> students) {
+        return students.stream().anyMatch(student -> student.getId().equals(id));
+    }
     public static String generateID(String name, List<Student> students){
         int studentSize = students.size() + 1;
 
@@ -31,16 +43,4 @@ public class GenerateID {
         return studentID;
     }
 
-    private static String computeID(String nameInitial, int studentSize){
-        int IDNumber = (studentSize * 10) / 10;
-
-        String numberPartOfID = IDNumber < 10 ? "00"+studentSize : IDNumber < 100 ? "0" + studentSize:
-                "" + studentSize;
-
-        return nameInitial + numberPartOfID;
-    }
-
-    public static boolean isIDExists(String id, List<Student> students) {
-        return students.stream().anyMatch(student -> student.getId().equals(id));
-    }
 }
