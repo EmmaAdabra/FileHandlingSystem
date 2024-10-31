@@ -9,6 +9,7 @@ import repository.StudentRepository;
 import util.Response;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UserServices implements IUserServices {
     IStudentRepository studentRepository;
@@ -63,5 +64,16 @@ public class UserServices implements IUserServices {
 
         return false;
     }
+
+    @Override
+    public Optional<Student> getStudentByID(String id) {
+        return studentRepository.getStudentByID(id);
+    }
+
+    @Override
+    public Response updateStudentRecord() {
+        return studentRepository.updateStudentRecord();
+    }
+
 }
 
