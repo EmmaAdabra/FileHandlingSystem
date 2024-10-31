@@ -83,4 +83,16 @@ public class ValidateUserInput {
         }
         return new Response(true, "valid value", result);
     }
+
+    public Response validateStudentID(String id){
+        Pattern idPatter = Pattern.compile("^[A-Z][A-Z][0-9]{3,4}$");
+        Matcher matcher = idPatter.matcher(id);
+
+        if(!matcher.matches()) {
+            return new Response(false,
+                    "Student ID should follow this format e.g: BD001(min), MP1000(max)", null);
+        }
+
+        return new Response(true, "success", null);
+    }
 }
