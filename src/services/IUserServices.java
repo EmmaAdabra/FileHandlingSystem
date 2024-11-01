@@ -5,6 +5,7 @@ import model.User;
 import util.Response;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface IUserServices {
@@ -15,5 +16,6 @@ public interface IUserServices {
     boolean addStudent(Student newStudent);
     Optional<Student> getStudentByID(String id);
     Response updateStudentRecord();
+    Map<Integer, Student> getStudentsByName(String name);
 }
 
