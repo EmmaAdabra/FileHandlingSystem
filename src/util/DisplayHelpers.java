@@ -1,9 +1,6 @@
 package util;
 
-import model.User;
-
 import java.util.List;
-import java.util.Objects;
 
 public class DisplayHelpers {
     public static void displayMenu(String title, String[] options, String userDetails){
@@ -28,11 +25,11 @@ public class DisplayHelpers {
         System.out.println();
     }
 
-    public static void displayObjects(List<?> obj) {
-        for(int i = 0; i < obj.size(); i++) {
-            System.out.println(i+1 + ". " + obj.get(i));
+    public static void displayList(List<?> list) {
+        for(int i = 0; i < list.size(); i++) {
+            System.out.println(i+1 + ". " + list.get(i));
 
-            if(i != (obj.size() - 1)) {
+            if(i != (list.size() - 1)) {
                 System.out.println();
             }
         }
