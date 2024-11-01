@@ -125,7 +125,7 @@ public class UserController {
 //        String userDetails = currentUSer.getName() + " (" + currentUSer.getEmail() + ")";
         String heading = "--------------- Main Menu ---------------";
         String[] menuOptions = new String[]{"Add Student", "View Students", "Search For Student", "Edit Student Details",
-                "View Registered Users", "Register User", "Logout"};
+                "Delete Student", "View Registered Users", "Register User", "Logout"};
 
         while (currentUSer.isOnline()) {
             DisplayHelpers.displayMenu(heading, menuOptions, "");
@@ -137,9 +137,10 @@ public class UserController {
                 case 2 -> viewStudents();
                 case 3 -> searchStudentRecord();
                 case 4 -> editStudentDetails();
-                case 5 -> viewUsers();
-                case 6 -> registerUsers();
-                case 7 -> logout();
+                case 5 -> deleteStudent();
+                case 6 -> viewUsers();
+                case 7 -> registerUsers();
+                case 8 -> logout();
             }
         }
     }
@@ -314,5 +315,34 @@ public class UserController {
                 System.out.println();
             }
         });
+    }
+
+    protected void deleteStudent(){
+        System.out.println();
+        String heading = "--------------- Delete Student ---------------";
+        String[] searchOption = new String[]{"Enter ID", "Enter Name(coming soon)"};
+        DisplayHelpers.displaySubMenu(heading, searchOption);
+
+        System.out.println();
+        int option = IterateInput.intInput("Option", 1,
+                searchOption.length, validate::validateUserOption);
+//        System.out.println();
+
+        switch (option){
+            case 1 -> {
+                String studentID = IterateInput.stringInput("Student ID", validate::validateStudentID);
+                deleteStudentByID(studentID);
+            }
+            case 2 -> System.out.println("Coming soon");
+        }
+    }
+
+    private void deleteStudentByID(String id){
+        System.out.println();
+        if(userServices.deleteStudent(id)) {
+            System.out.println("Student with ID: " + id + " deleted successfully");
+        } else {
+            System.out.println("No student with ID: " + id);
+        }
     }
 }
