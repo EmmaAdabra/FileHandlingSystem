@@ -14,5 +14,6 @@ public interface IStudentRepository {
     Optional<Student> getStudentByID(String id);
     Response updateStudentRecord();
     List<Student> getStudentByName(String name);
+    boolean removeStudent(String id);
 }
 
