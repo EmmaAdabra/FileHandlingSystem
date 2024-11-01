@@ -55,4 +55,9 @@ public class StudentRepository implements IStudentRepository  {
     public Response updateStudentRecord() {
         return csvHandler.writeAllStudentsToCSV(students);
     }
+
+    @Override
+    public List<Student> getStudentByName(String name) {
+        return students.stream().filter(student -> student.getName().equalsIgnoreCase(name)).toList();
+    }
 }
