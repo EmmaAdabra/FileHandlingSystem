@@ -8,7 +8,9 @@ import repository.IUserRepository;
 import repository.StudentRepository;
 import util.Response;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class UserServices implements IUserServices {
@@ -73,6 +75,17 @@ public class UserServices implements IUserServices {
     @Override
     public Response updateStudentRecord() {
         return studentRepository.updateStudentRecord();
+    }
+
+    @Override
+    public Map<Integer, Student> getStudentsByName(String name) {
+        int count = 1;
+        Map<Integer, Student> studentRecord = new HashMap<>();
+
+        for(Student student : studentRepository.getStudentByName(name)){
+            studentRecord.put(count++, student);
+        }
+        return studentRecord;
     }
 
 }
