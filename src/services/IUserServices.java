@@ -17,5 +17,6 @@ public interface IUserServices {
     Optional<Student> getStudentByID(String id);
     Response updateStudentRecord();
     Map<Integer, Student> getStudentsByName(String name);
+    boolean deleteStudent(String studentID);
 }
 
