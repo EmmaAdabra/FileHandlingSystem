@@ -124,7 +124,7 @@ public class UserController {
     protected void displayMenu(){
 //        String userDetails = currentUSer.getName() + " (" + currentUSer.getEmail() + ")";
         String heading = "--------------- Main Menu ---------------";
-        String[] menuOptions = new String[]{"Add Student", "View Students", "Edit Student Details",
+        String[] menuOptions = new String[]{"Add Student", "View Students", "Search For Student", "Edit Student Details",
                 "View Registered Users", "Register User", "Logout"};
 
         while (currentUSer.isOnline()) {
@@ -135,10 +135,11 @@ public class UserController {
             switch (userOption) {
                 case 1 -> addStudent();
                 case 2 -> viewStudents();
-                case 3 -> editStudentDetails();
-                case 4 -> viewUsers();
-                case 5 -> registerUsers();
-                case 6 -> logout();
+                case 3 -> searchStudentRecord();
+                case 4 -> editStudentDetails();
+                case 5 -> viewUsers();
+                case 6 -> registerUsers();
+                case 7 -> logout();
             }
         }
     }
@@ -150,7 +151,7 @@ public class UserController {
         List<User> users = userServices.getUsers();
 
         if(users.size() > 0) {
-            DisplayHelpers.displayObjects(users);
+            DisplayHelpers.displayList(users);
         } else {
             System.out.println("No register user");
         }
@@ -167,7 +168,7 @@ public class UserController {
         List<Student> students =  userServices.getStudents();
 
         if(students.size() > 0) {
-            DisplayHelpers.displayObjects(students);
+            DisplayHelpers.displayList(students);
         } else {
             System.out.println("No student found");
         }
@@ -197,6 +198,7 @@ public class UserController {
     protected void editStudentDetails(){
         System.out.println();
         String heading = "--------------- Edit Student Details ---------------";
+        System.out.println();
         DisplayHelpers.displaySubMenu(heading, new String[]{"Get Student By ID", "Get Student By Name"});
 
         int option = IterateInput.intInput("Option", 1, 2, validate::validateUserOption);
@@ -211,6 +213,9 @@ public class UserController {
     private void handleEditStudentByID() {
         String studentID = IterateInput.stringInput("Student ID", validate::validateStudentID);
         Student student = userServices.getStudentByID(studentID).orElse(null);
+        if(student == null){
+            System.out.println("Student with ID " + studentID + "not found");
+        }
         editStudentHelper(student);
     }
 
@@ -258,5 +263,56 @@ public class UserController {
                 }
             }
         }
+    }
+
+    protected void searchStudentRecord(){
+        System.out.println();
+        String heading = "--------------- Search for student ---------------";
+        String[] searchOption = new String[]{"Search by ID", "Search by Name"};
+        DisplayHelpers.displaySubMenu(heading, searchOption);
+
+        int option = IterateInput.intInput("Option", 1,
+                searchOption.length, validate::validateUserOption);
+//        System.out.println();
+
+        switch (option){
+            case 1 -> searchStudentByID();
+            case 2 -> searchStudentByName();
+        }
+    }
+
+    private void searchStudentByID() {
+        String studentID = IterateInput.stringInput("Student ID", validate::validateStudentID);
+        var response = userServices.getStudentByID(studentID);
+        Student student = response.orElse(null);
+
+        System.out.println();
+        System.out.println("--------------- Search Result ---------------");
+        System.out.println();
+        if(student == null) {
+            System.out.println("No student with the " + studentID);
+        }
+
+        System.out.println("[" +student + "]");
+    }
+
+    private void searchStudentByName(){
+        String studentName = IterateInput.stringInput("Student Name", validate::validateName);
+        var searchResult = userServices.getStudentsByName(studentName);
+
+        System.out.println();
+        System.out.println("--------------- Search Result ---------------");
+        System.out.println();
+        if(searchResult.isEmpty()){
+            System.out.println(studentName + " not found");
+        }
+
+        searchResult.forEach((key, value) -> {
+            System.out.println(key + ". " + "[" + value + "]");
+
+            if((key - 1) != searchResult.size() - 1 ){
+                System.out.println();
+            }
+        });
     }
 }
