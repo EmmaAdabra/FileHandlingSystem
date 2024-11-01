@@ -88,5 +88,10 @@ public class UserServices implements IUserServices {
         return studentRecord;
     }
 
+    @Override
+    public boolean deleteStudent(String studentID) {
+        return studentRepository.removeStudent(studentID);
+    }
+
 }
 
