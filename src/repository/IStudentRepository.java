@@ -13,5 +13,6 @@ public interface IStudentRepository {
     boolean isStudent(Student student);
     Optional<Student> getStudentByID(String id);
     Response updateStudentRecord();
+    List<Student> getStudentByName(String name);
 }
 
