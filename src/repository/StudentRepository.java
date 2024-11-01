@@ -60,4 +60,18 @@ public class StudentRepository implements IStudentRepository  {
     public List<Student> getStudentByName(String name) {
         return students.stream().filter(student -> student.getName().equalsIgnoreCase(name)).toList();
     }
+
+    @Override
+    public boolean removeStudent(String id) {
+        var student = getStudentByID(id);
+
+        if(student.isEmpty()){
+            return false;
+        }
+
+        students.removeIf(stud -> stud.getId().equals(id));
+        updateStudentRecord();
+
+        return true;
+    }
 }
