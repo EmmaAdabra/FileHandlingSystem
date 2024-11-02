@@ -7,17 +7,18 @@ import services.IUserServices;
 import services.UserServices;
 import util.*;
 
-import java.util.List;
+import java.util.*;
 
 public class UserController {
     User currentUSer;
     ValidateUserInput validate;
     IUserServices userServices;
+    ActionProvider actionProvider;
 
     public UserController(ValidateUserInput validate, IUserRepository userRepository) {
         this.validate = validate;
         this.userServices = new UserServices(userRepository);
-
+        this.actionProvider = new ActionProvider();
     }
 
     public void signUp(){
@@ -74,7 +75,6 @@ public class UserController {
             System.out.println("2. CSV API Handler (coming soon)");
             System.out.println();
             int option = IterateInput.intInput("Option", 1, 3, validate::validateUserOption);
-
             switch (option) {
                 case 1 -> response = userServices.setCSVHandler(MAIN_CSV_HANDLER);
                 case 2 -> {
@@ -126,22 +126,17 @@ public class UserController {
         String heading = "--------------- Main Menu ---------------";
         String[] menuOptions = new String[]{"Add Student", "View Students", "Search For Student", "Edit Student Details",
                 "Delete Student", "View Registered Users", "Register User", "Logout"};
+        List<Runnable> actionList = new ArrayList<>(Arrays.asList(this::addStudent, this::viewStudents,
+                this::searchStudentRecord, this::editStudentDetails, this::deleteStudent, this::viewUsers,
+                this::registerUsers, this::logout));
 
         while (currentUSer.isOnline()) {
             DisplayHelpers.displayMenu(heading, menuOptions, "");
             int userOption = IterateInput.intInput("Option", 1,
                     menuOptions.length, validate::validateUserOption);
 
-            switch (userOption) {
-                case 1 -> addStudent();
-                case 2 -> viewStudents();
-                case 3 -> searchStudentRecord();
-                case 4 -> editStudentDetails();
-                case 5 -> deleteStudent();
-                case 6 -> viewUsers();
-                case 7 -> registerUsers();
-                case 8 -> logout();
-            }
+            actionProvider.getActions(actionList, userOption).run();
+
         }
     }
 
@@ -274,12 +269,8 @@ public class UserController {
 
         int option = IterateInput.intInput("Option", 1,
                 searchOption.length, validate::validateUserOption);
-//        System.out.println();
 
-        switch (option){
-            case 1 -> searchStudentByID();
-            case 2 -> searchStudentByName();
-        }
+        actionProvider.getActions(Arrays.asList(this::searchStudentByID, this::searchStudentByName), option).run();
     }
 
     private void searchStudentByID() {

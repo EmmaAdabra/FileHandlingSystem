@@ -1,21 +1,13 @@
 import controller.AuthController;
 import controller.UserController;
-import infrastructure.DefaultCSVHandler;
-import infrastructure.ICSVHandler;
-import model.Student;
-import repository.IStudentRepository;
 import repository.IUserRepository;
-import repository.StudentRepository;
 import repository.UserRepository;
-import util.CSVHelpers;
-import util.DisplayHelpers;
-import util.IterateInput;
-import util.ValidateUserInput;
-
-import java.util.List;
+import util.*;
+import java.util.Arrays;
 
 public class App {
     public static void main(String[] args) {
+        var actionProviders = new ActionProvider();
         var validateUserInput = new ValidateUserInput();
         IUserRepository userRepository = new UserRepository();
         var userController = new UserController(validateUserInput, userRepository);
@@ -30,13 +22,8 @@ public class App {
             DisplayHelpers.displayMenu(heading, menuOptions, "");
             int option = IterateInput.intInput("Option", 1, 3, validateUserInput::validateUserOption);
 
-            switch (option){
-                case 1 -> userController.signUp();
-                case 2 -> authController.login();
-                case 3 -> {
-                    System.exit(0);
-                }
-            }
+            actionProviders.getActions(Arrays.asList(userController::signUp,
+                    authController::login, () -> {System.exit(0);}), option).run();
         }
     }
 }
