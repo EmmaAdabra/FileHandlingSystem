@@ -4,7 +4,7 @@ import java.io.*;
 
 public class TrackNumberOfRegisteredStudent {
     private static int totalRegisteredStudent;
-    private static final String TRACK_REGISTERED_STUD_FILE = ".TotalRegisteredStudent.txt";
+    private static final String TRACK_REGISTERED_STUD_FILE = ".totalRegisteredStudent.txt";
 
     public static void createTrackRegisteredStudentsFile() throws IOException {
         File trackStudentFile = new File(TRACK_REGISTERED_STUD_FILE);
