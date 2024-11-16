@@ -3,10 +3,12 @@ import controller.UserController;
 import repository.IUserRepository;
 import repository.UserRepository;
 import util.*;
+
 import java.util.Arrays;
 
-public class App {
+public class Main {
     public static void main(String[] args) {
+        TrackNumberOfRegisteredStudent.loadTrackStudentFile();
         var actionProviders = new ActionProvider();
         var validateUserInput = new ValidateUserInput();
         IUserRepository userRepository = new UserRepository();
@@ -20,7 +22,8 @@ public class App {
 
         while (true) {
             DisplayHelpers.displayMenu(heading, menuOptions, "");
-            int option = IterateInput.intInput("Option", 1, 3, validateUserInput::validateUserOption);
+            int option = IterateInput.intInput("Option", 1, 3,
+                    validateUserInput::validateUserOption);
 
             actionProviders.getActions(Arrays.asList(userController::signUp,
                     authController::login, () -> {System.exit(0);}), option).run();

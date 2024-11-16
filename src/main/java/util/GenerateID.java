@@ -14,11 +14,11 @@ public class GenerateID {
         return nameInitial + numberPartOfID;
     }
 
-    private static boolean isIDExists(String id, List<Student> students) {
-        return students.stream().anyMatch(student -> student.getId().equals(id));
-    }
-    public static String generateID(String name, List<Student> students){
-        int studentSize = students.size() + 1;
+//    private static boolean isIDExists(String id, List<Student> students) {
+//        return students.stream().anyMatch(student -> student.getId().equals(id));
+//    }
+    public static String generateID(String name, int totalRegisteredStudent){
+        int studentSize = totalRegisteredStudent;
 
         if(name == null) {
             return null;
@@ -36,11 +36,10 @@ public class GenerateID {
 
        String studentID = computeID(nameInitial, studentSize);
 
-        while (isIDExists(studentID, students)) {
-            studentID = computeID(nameInitial, studentSize+1);
-        }
 
         return studentID;
     }
+
+
 
 }

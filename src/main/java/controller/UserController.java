@@ -7,7 +7,11 @@ import services.IUserServices;
 import services.UserServices;
 import util.*;
 
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class UserController {
     User currentUSer;
@@ -178,13 +182,15 @@ public class UserController {
         int age = CustomScanner.readInt("Age");
         String course = CustomScanner.readString("Course");
         double gpa = CustomScanner.readDouble("GPA");
-        String id = GenerateID.generateID(name, userServices.getStudents());
+//        String id = GenerateID.generateID(name, userServices.getStudents());
 
-        var newStudent = new Student(id, name, age, course, gpa);
+        var newStudent = new Student(GenerateID.generateID(name,
+                TrackNumberOfRegisteredStudent.getTotalRegisteredStudent()), name, age, course, gpa);
 
         System.out.println();
         if(userServices.addStudent(newStudent)){
             System.out.println("Student added successfully");
+            TrackNumberOfRegisteredStudent.incrementStudentCount();
         }
         else {
             System.out.println("Student already exist");

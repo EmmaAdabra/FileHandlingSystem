@@ -62,7 +62,7 @@ The **Student Management System** is a terminal-based Java application designed 
 
 [//]: # (│   │)
 
-[//]: # (│   └── App.java                # Main application class to run the program)
+[//]: # (│   └── Main.java                # Main application class to run the program)
 
 [//]: # (│)
 
@@ -91,7 +91,7 @@ The **Student Management System** is a terminal-based Java application designed 
     ```
 3. Compile the source code:
     ```bash
-   java -cp out App
+   java -cp out Main
    ```
 ## Usage
 - Start the application, and follow the prompts in the terminal to perform operations such as adding, updating, or deleting student records.
