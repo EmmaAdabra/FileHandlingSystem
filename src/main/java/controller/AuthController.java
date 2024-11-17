@@ -30,7 +30,6 @@ public class AuthController {
         Response verify = authServices.verifyLogin(email, password);
         if(verify.status) {
             User loggedInUser = (User)verify.obj;
-            loggedInUser.login();
             controller.handleLogin(loggedInUser);
 
         } else {

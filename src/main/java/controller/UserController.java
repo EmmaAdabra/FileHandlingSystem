@@ -49,7 +49,7 @@ public class UserController {
     }
 
     protected void handleLogin(User user) {
-        user.login();
+        user.setIsOnline(true);
         this.currentUSer = user;
         if(chooseCSVHandler()) {
             displayMenu();
@@ -60,7 +60,7 @@ public class UserController {
 
     protected void logout() {
         if(currentUSer != null && currentUSer.isOnline()) {
-            currentUSer.logout();
+            currentUSer.setIsOnline(false);
         } else {
             System.out.println("You are have already logout");
         }

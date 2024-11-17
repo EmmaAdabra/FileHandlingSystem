@@ -6,16 +6,7 @@ public class User {
     private final String name;
     private final String email;
     private final String password;
-
     private boolean isOnline = false;
-
-    public void login() {
-        isOnline = true;
-    }
-
-    public void logout() {
-        isOnline = false;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -54,5 +45,8 @@ public class User {
 
     public boolean isOnline() {
         return isOnline;
+    }
+    public void setIsOnline(boolean state){
+        this.isOnline = state;
     }
 }
