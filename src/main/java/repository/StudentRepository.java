@@ -18,7 +18,7 @@ public class StudentRepository implements IStudentRepository  {
     }
 
     @Override
-    public Response loadStudentCSV() {
+    public Response LoadStudentsFromCSV() {
         Response response = csvHandler.readStudentFromCSV();
 
         if(response.status) {
@@ -69,9 +69,13 @@ public class StudentRepository implements IStudentRepository  {
             return false;
         }
 
-        students.removeIf(stud -> stud.getId().equals(id));
-        updateStudentRecord();
+        boolean deleted = students.removeIf(stud -> stud.getId().equals(id));
 
-        return true;
+        if(deleted) {
+            updateStudentRecord();
+            return true;
+        }
+
+        return false;
     }
 }

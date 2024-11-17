@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IStudentRepository {
-    Response loadStudentCSV();
+    Response LoadStudentsFromCSV();
     List<Student> getStudents();
     void addStudent(Student student);
     boolean isStudent(Student student);

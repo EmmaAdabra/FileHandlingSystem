@@ -45,7 +45,7 @@ public class UserServices implements IUserServices {
 
         if (MAIN.equals(handler)) {
             this.studentRepository = new StudentRepository(new DefaultCSVHandler());
-            response = studentRepository.loadStudentCSV();
+            response = studentRepository.LoadStudentsFromCSV();
         }
 
         return response;
