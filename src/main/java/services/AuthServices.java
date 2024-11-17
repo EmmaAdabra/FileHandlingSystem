@@ -12,13 +12,13 @@ public class AuthServices implements IAuthServices {
     }
 
     @Override
-    public Response verifyLogin(String email, String password) {
+    public Response<Object> verifyLogin(String email, String password) {
         User user = userRepository.getUser(email);
 
         if(user == null || !user.getPassword().equals(password)) {
-            return new Response(false, "Invalid user details", null);
+            return new Response<>(false, "Invalid user details", null);
         }
 
-        return new Response(true, "success", user);
+        return new Response<>(true, "success", user);
     }
 }
