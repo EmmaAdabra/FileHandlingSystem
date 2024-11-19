@@ -1,6 +1,7 @@
 package repository;
 
 
+import infrastructure.DefaultCSVHandler;
 import infrastructure.ICSVHandler;
 import model.Student;
 import org.junit.jupiter.api.Assertions;
@@ -18,13 +19,13 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class TestStudentRepository {
     @Mock
-    ICSVHandler csvHandler;
-
+    DefaultCSVHandler csvHandler = new DefaultCSVHandler();
     IStudentRepository studentRepository;
 
     @BeforeEach
     public void setUp(){
-        studentRepository = new StudentRepository(csvHandler);
+        studentRepository = new StudentRepository();
+        studentRepository.setCSVHandler(csvHandler);
     }
 
     @Test
