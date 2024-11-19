@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class TestStudentRepository {
     @Mock
-    DefaultCSVHandler csvHandler = new DefaultCSVHandler();
+    DefaultCSVHandler csvHandler;
     IStudentRepository studentRepository;
 
     @BeforeEach
