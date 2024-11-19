@@ -3,6 +3,7 @@ package controller;
 import model.Student;
 import model.User;
 import repository.IUserRepository;
+import services.CSVHandlerType;
 import services.IUserServices;
 import services.UserServices;
 import util.*;
@@ -11,6 +12,7 @@ import util.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 
 public class UserController {
@@ -67,20 +69,21 @@ public class UserController {
     }
 
     protected boolean chooseCSVHandler(){
-        final String MAIN_CSV_HANDLER = "main";
-        final String API_CSV_HANDLER = "api";
         boolean csvHandlerNotSelected = true;
-        Response response = null;
+        Response<Objects> response = null;
 
         while (csvHandlerNotSelected) {
             System.out.println();
             System.out.println("--------------- Choose CSV Handler ---------------");
             System.out.println("1. Default CSV Handler");
-            System.out.println("2. CSV API Handler (coming soon)");
+            System.out.println("2. API CSV Handler (coming soon)");
             System.out.println();
-            int option = IterateInput.intInput("Option", 1, 3, validate::validateUserOption);
+            int option = IterateInput.intInput("Option", 1, 2, validate::validateUserOption);
             switch (option) {
-                case 1 -> response = userServices.setCSVHandler(MAIN_CSV_HANDLER);
+                case 1 -> {
+                    response = userServices.setCSVHandler(CSVHandlerType.DEFAULT);
+                    csvHandlerNotSelected = false;
+                }
                 case 2 -> {
                     System.out.println();
                     System.out.println("API CSV Handler Coming soon");
@@ -90,37 +93,33 @@ public class UserController {
 //            Note: modify logic later
             if(response != null) {
                 if(response.status) {
-                    csvHandlerNotSelected = false;
-                } else {
+                    System.out.println();
+                    System.out.println(response.message);
+                }
+                else {
                     System.out.println();
                     System.out.println("Error occur loading students csv file:\n" + response.message);
-
                     int opt = chooseCSVHandlerHelper();
 
-                    switch (opt) {
-                        case 1 -> {
-                            return false;
-                        }
-
-                        case 2 -> {
-                            System.out.println();
-                            System.out.println("No other available CSV Handler");
-                            chooseCSVHandlerHelper();
-                        }
+                    if (opt == 1) {
+                        return false;
                     }
+                }
+            } else {
+                if (response == null && !csvHandlerNotSelected) {
+                    System.out.println();
+                    System.out.println("Unknown error occur, unable to initialized CSV handler");
+                    System.exit(-1);
                 }
             }
         }
-
-        System.out.println();
-        System.out.println(response.message);
         return true;
     }
 
     private int chooseCSVHandlerHelper(){
         System.out.println();
         System.out.println("1. Exit Program");
-        System.out.println("2. Try a different csv handler");
+        System.out.println("2. Try Again");
 
         return  CustomScanner.readInt("Option");
     }
