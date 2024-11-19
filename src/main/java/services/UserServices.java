@@ -46,8 +46,6 @@ public class UserServices implements IUserServices {
         if (csvHandler != null) {
             studentRepository.setCSVHandler(csvHandler);
             response = studentRepository.LoadStudentsFromCSV();
-        } else {
-            return response;
         }
         return response;
     }
