@@ -6,26 +6,23 @@ import util.Response;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class StudentRepository implements IStudentRepository  {
-    private final ICSVHandler csvHandler;
+    private  ICSVHandler csvHandler;
 
     private final List<Student> students = new ArrayList<>();
 
-    public StudentRepository(ICSVHandler csvHandler) {
-        this.csvHandler = csvHandler;
-    }
-
     @Override
-    public Response LoadStudentsFromCSV() {
-        Response response = csvHandler.readStudentFromCSV();
+    public Response<Object> LoadStudentsFromCSV() {
+        Response<Object> response = csvHandler.readStudentFromCSV();
 
         if(response.status) {
 //            Note: modify logic later
             List<Student> studentRecords = (List<Student>) response.obj;
             students.addAll(studentRecords);
-            return new Response(true, response.message, null);
+            return new Response<Object>(true, response.message, null);
         }
         return response;
     }
@@ -52,7 +49,7 @@ public class StudentRepository implements IStudentRepository  {
     }
 
     @Override
-    public Response updateStudentRecord() {
+    public Response<Object> updateStudentRecord() {
         return csvHandler.writeAllStudentsToCSV(students);
     }
 
@@ -77,5 +74,9 @@ public class StudentRepository implements IStudentRepository  {
         }
 
         return false;
+    }
+
+    public void setCSVHandler(ICSVHandler csvHandler) {
+        this.csvHandler = csvHandler;
     }
 }
