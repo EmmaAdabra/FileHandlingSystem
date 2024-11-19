@@ -1,6 +1,6 @@
 package services;
 
-import infrastructure.DefaultCSVHandler;
+import infrastructure.ICSVHandler;
 import model.Student;
 import model.User;
 import repository.IStudentRepository;
@@ -19,6 +19,7 @@ public class UserServices implements IUserServices {
 
     public UserServices(IUserRepository userRepository) {
         this.userRepository = userRepository;
+        this.studentRepository = new StudentRepository();
     }
 
     @Override
@@ -39,15 +40,15 @@ public class UserServices implements IUserServices {
     }
 
     @Override
-    public Response setCSVHandler(String handler) {
-        final String MAIN = "main";
+    public Response setCSVHandler(CSVHandlerType handlerType) {
         Response response = null;
-
-        if (MAIN.equals(handler)) {
-            this.studentRepository = new StudentRepository(new DefaultCSVHandler());
+        ICSVHandler csvHandler = CSVHandlerFactory.createCSVHandler(handlerType);
+        if (csvHandler != null) {
+            studentRepository.setCSVHandler(csvHandler);
             response = studentRepository.LoadStudentsFromCSV();
+        } else {
+            return response;
         }
-
         return response;
     }
 
