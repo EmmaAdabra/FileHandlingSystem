@@ -1,5 +1,6 @@
 package repository;
 
+import infrastructure.ICSVHandler;
 import model.Student;
 import util.Response;
 
@@ -15,5 +16,6 @@ public interface IStudentRepository {
     Response updateStudentRecord();
     List<Student> getStudentByName(String name);
     boolean removeStudent(String id);
+    void setCSVHandler(ICSVHandler csvHandler);
 }
 
