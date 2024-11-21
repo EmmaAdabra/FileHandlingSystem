@@ -13,16 +13,16 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import repository.IStudentRepository;
+import org.mockito.stubbing.Answer;
 import repository.StudentRepository;
 import repository.UserRepository;
 import services.CSVHandlerType;
-import services.IUserServices;
 import services.UserServices;
 import util.Response;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -40,9 +40,14 @@ public class TestUserService {
     private UserServices userServices;
     @BeforeEach
     public void setUp(){
-       MockitoAnnotations.openMocks(this);
        studentRepository.setCSVHandler(csvHandler);
+       MockitoAnnotations.openMocks(this);
     }
+
+    private List<Student> mockStudents = List.of(
+            new Student("AJ001", "Ajayi", 24, "Neworking", 4.5),
+            new Student("EA002", "Emmanuel", 24, "programming", 4.5)
+    );
 
     @Test
     public void addNewUserTest(){
@@ -126,5 +131,66 @@ public class TestUserService {
     //       Assert
         verify(studentRepository, times(1)).getStudents();
         Assertions.assertEquals(mockedStudentList, students);
+    }
+
+    @Test
+    public void testAddNewStudent(){
+//        Arrange
+        Student newStudent = new Student("AJ001", "Ajayi", 24, "Networking", 4.5);
+        when(studentRepository.isStudent(newStudent)).thenReturn(false);
+        doNothing().when(studentRepository).addStudent(newStudent);
+
+//      Act
+        boolean added = userServices.addStudent(newStudent);
+
+//        Assert
+        Assertions.assertTrue(added);
+        verify(studentRepository, times(1)).addStudent(newStudent);
+    }
+
+    @Test
+    public void testAddExistingStudent(){
+//        Arrange
+        Student student = new Student("AJ001", "Ajayi", 24, "Networking", 4.5);
+        when(studentRepository.isStudent(student)).thenReturn(true);
+
+//        Act
+        boolean added = userServices.addStudent(student);
+
+//        Assert
+        Assertions.assertFalse(added);
+        verify(studentRepository, times(0)).addStudent(student);
+    }
+
+    @Test
+    public void testGetStudentByCorrectID(){
+//        Arrange
+        String correctID = "AJ001";
+        Student student = new Student(correctID, "Ajayi", 24, "Networking", 4.5);
+        Optional<Student> mockedStudent = Optional.of(student);
+        when(studentRepository.getStudentByID(correctID)).thenReturn(mockedStudent);
+
+//        Act
+        Student retrievedStudent = userServices.getStudentByID(correctID).orElse(null);
+
+//        Assert
+        Assertions.assertNotNull(retrievedStudent);
+        Assertions.assertEquals(student, retrievedStudent);
+        verify(studentRepository).getStudentByID(student.getId());
+    }
+
+    @Test
+    public void testGetStudentByWrongID(){
+//        Arrange
+        String wrongID = "WW001";
+        Optional<Student> mockedStudent = Optional.empty();
+        when(studentRepository.getStudentByID(wrongID)).thenReturn(mockedStudent);
+
+//        Act
+        Student retrievedStudent = userServices.getStudentByID(wrongID).orElse(null);
+
+//        Assert
+        Assertions.assertNull(retrievedStudent);
+        verify(studentRepository).getStudentByID(wrongID);
     }
 }
