@@ -56,7 +56,7 @@ public class UserController {
         if(chooseCSVHandler()) {
             displayMenu();
         } else {
-            System.exit(1);
+            System.exit(-1);
         }
     }
 
@@ -101,8 +101,9 @@ public class UserController {
                     System.out.println("Error occur loading students csv file:\n" + response.message);
                     int opt = chooseCSVHandlerHelper();
 
-                    if (opt == 1) {
-                        return false;
+                    switch (opt){
+                        case 1 -> {return false;}
+                        case 2 -> {csvHandlerNotSelected = true;}
                     }
                 }
             } else {
@@ -121,7 +122,7 @@ public class UserController {
         System.out.println("1. Exit Program");
         System.out.println("2. Try Again");
 
-        return  CustomScanner.readInt("Option");
+        return  IterateInput.intInput("Option", 1, 2, validate::validateUserOption);
     }
 
     protected void displayMenu(){
@@ -187,6 +188,8 @@ public class UserController {
                 TrackNumberOfRegisteredStudent.getTotalRegisteredStudent()), name, age, course, gpa);
 
         System.out.println();
+
+//        Note: Modify, addStudent should return response and response status should be checked
         if(userServices.addStudent(newStudent)){
             System.out.println("Student added successfully");
             TrackNumberOfRegisteredStudent.incrementStudentCount();
