@@ -11,9 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 import repository.StudentRepository;
 import repository.UserRepository;
 import services.CSVHandlerType;
@@ -43,11 +41,6 @@ public class TestUserService {
        studentRepository.setCSVHandler(csvHandler);
        MockitoAnnotations.openMocks(this);
     }
-
-    private List<Student> mockStudents = List.of(
-            new Student("AJ001", "Ajayi", 24, "Neworking", 4.5),
-            new Student("EA002", "Emmanuel", 24, "programming", 4.5)
-    );
 
     @Test
     public void addNewUserTest(){
