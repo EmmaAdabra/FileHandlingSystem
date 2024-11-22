@@ -56,6 +56,7 @@ public class UserServices implements IUserServices {
     }
 
     @Override
+//    Note: Modify, addStudent should return response
     public boolean addStudent(Student newStudent) {
         if(!studentRepository.isStudent(newStudent)) {
             studentRepository.addStudent(newStudent);
