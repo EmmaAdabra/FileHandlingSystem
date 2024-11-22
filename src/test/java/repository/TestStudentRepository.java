@@ -35,7 +35,7 @@ public class TestStudentRepository {
                 new Student("AJ001", "Ajayi", 24, "Neworking", 4.5),
                 new Student("EA002", "Emmanuel", 24, "programming", 4.5)
                 );
-        Response<List<Student>> mockedResponse = new Response<>(true, "success", students);
+        Response<Object> mockedResponse = new Response<>(true, "success", students);
 
         when(csvHandler.readStudentFromCSV()).thenReturn(mockedResponse);
 
@@ -52,7 +52,7 @@ public class TestStudentRepository {
     public void testLoadStudentsFromEmptyCSVToPopulatesRepository(){
 //        Arrange
         List<Student> students = Collections.emptyList();
-        Response<List<Student>> mockedResponse = new Response<>(true, "success", students);
+        Response<Object> mockedResponse = new Response<>(true, "success", students);
 
         when(csvHandler.readStudentFromCSV()).thenReturn(mockedResponse);
 
@@ -146,7 +146,7 @@ public class TestStudentRepository {
     public void testUpdateStudentRecord(){
 //        Arrange
         when(csvHandler.writeAllStudentsToCSV(anyList()))
-                .thenReturn(new Response<Objects>(true, "success", null));
+                .thenReturn(new Response<Object>(true, "success", null));
 
 //        Act
         studentRepository.updateStudentRecord();
