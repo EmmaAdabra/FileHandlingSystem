@@ -9,14 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultCSVHandler implements ICSVHandler {
-    private final String FILE_PATH = "csv/students.csv";
     private final String CSV_HEADER = "ID,NAME,AGE,COURSE,GPA";
 
     @Override
-    public Response<Void> writeAllStudentsToCSV(List<Student> students) {
+    public Response<Void> writeAllStudentsToCSV(List<Student> students, String filePath) {
         String errorMsg = null;
 
-        try (var csvWriter = new BufferedWriter(new FileWriter(FILE_PATH))) {
+        try (var csvWriter = new BufferedWriter(new FileWriter(filePath))) {
             csvWriter.write(CSV_HEADER);
             csvWriter.newLine();
             String csvRow;
@@ -43,15 +42,15 @@ public class DefaultCSVHandler implements ICSVHandler {
     }
 
     @Override
-    public Response<List<Student>> readStudentFromCSV() {
+    public Response<List<Student>> readStudentFromCSV(String filePath) {
         List<Student> students = new ArrayList<>();
         boolean firstRow = true;
         String errorMsg = null;
 
-        if(!CSVHelpers.fileExist(FILE_PATH)) {
+        if(!CSVHelpers.fileExist(filePath)) {
             try {
-                CSVHelpers.createFile(FILE_PATH);
-                return new Response<>(true, FILE_PATH
+                CSVHelpers.createFile(filePath);
+                return new Response<>(true, filePath
                         + " file have been created successfully", new ArrayList<>());
 
             } catch (IOException e) {
@@ -62,12 +61,12 @@ public class DefaultCSVHandler implements ICSVHandler {
             }
         }
 
-        if(CSVHelpers.isEmpty(FILE_PATH)){
-            return new Response<>(true, FILE_PATH
+        if(CSVHelpers.isEmpty(filePath)){
+            return new Response<>(true, filePath
                     + " loaded successfully (no student records found)", new ArrayList<>());
         }
 
-        try (var csvReader = new BufferedReader(new FileReader(FILE_PATH))) {
+        try (var csvReader = new BufferedReader(new FileReader(filePath))) {
             String studentRecord;
 
             while ((studentRecord = csvReader.readLine()) != null) {
@@ -90,17 +89,17 @@ public class DefaultCSVHandler implements ICSVHandler {
 
         return errorMsg != null
             ? new Response<>(false, errorMsg, null)
-            : new Response<>(true, FILE_PATH + " loaded successfully", students);
+            : new Response<>(true, filePath + " loaded successfully", students);
     }
 
     @Override
-    public Response<Void> addStudentToCSV(Student student) {
+    public Response<Void> addStudentToCSV(Student student, String filePath) {
         String errorMsg;
-        boolean fileExist = CSVHelpers.fileExist(FILE_PATH);
+        boolean fileExist = CSVHelpers.fileExist(filePath);
 
-        try (var csvWriter = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
+        try (var csvWriter = new BufferedWriter(new FileWriter(filePath, true))) {
 
-            if (!fileExist || CSVHelpers.isEmpty(FILE_PATH)) {
+            if (!fileExist || CSVHelpers.isEmpty(filePath)) {
                 csvWriter.write(CSV_HEADER);
                 csvWriter.newLine();
             } else {
