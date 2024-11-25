@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IStudentRepository {
-    Response LoadStudentsFromCSV();
+    Response<Void> LoadStudentsFromCSV();
     List<Student> getStudents();
     void addStudent(Student student);
     boolean isStudent(Student student);
     Optional<Student> getStudentByID(String id);
-    Response updateStudentRecord();
+    Response<Void> updateStudentRecord();
     List<Student> getStudentByName(String name);
     boolean removeStudent(String id);
     void setCSVHandler(ICSVHandler csvHandler);

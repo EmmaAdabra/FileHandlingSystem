@@ -13,7 +13,9 @@ public class DefaultCSVHandler implements ICSVHandler {
     private final String CSV_HEADER = "ID,NAME,AGE,COURSE,GPA";
 
     @Override
-    public Response<Object> writeAllStudentsToCSV(List<Student> students) {
+    public Response<Void> writeAllStudentsToCSV(List<Student> students) {
+        String errorMsg = null;
+
         try (var csvWriter = new BufferedWriter(new FileWriter(FILE_PATH))) {
             csvWriter.write(CSV_HEADER);
             csvWriter.newLine();
@@ -29,19 +31,22 @@ public class DefaultCSVHandler implements ICSVHandler {
             }
 
         } catch (IOException e) {
-            return new Response<>(false, e.getMessage(), null);
+            errorMsg = e.getMessage();
         } catch (Exception e){
+            errorMsg = e.getMessage();
             GlobalErrorHandler.handleException(e);
-            return new Response<>(false, e.getMessage(), null);
         }
 
-        return new Response<>(true, "success", null);
+        return errorMsg != null
+            ? new Response<>(false, errorMsg, null)
+            : new Response<>(true, "success", null);
     }
 
     @Override
-    public Response<Object> readStudentFromCSV() {
+    public Response<List<Student>> readStudentFromCSV() {
         List<Student> students = new ArrayList<>();
         boolean firstRow = true;
+        String errorMsg = null;
 
         if(!CSVHelpers.fileExist(FILE_PATH)) {
             try {
@@ -50,10 +55,10 @@ public class DefaultCSVHandler implements ICSVHandler {
                         + " file have been created successfully", new ArrayList<>());
 
             } catch (IOException e) {
-                return new Response<>(false, e.getMessage(), null);
+                errorMsg = e.getMessage();
             } catch (Exception e){
+                errorMsg = "Unexpected error occur: " + e.getMessage();
                 GlobalErrorHandler.handleException(e);
-                return new Response<>(false, e.getMessage(), null);
             }
         }
 
@@ -66,7 +71,7 @@ public class DefaultCSVHandler implements ICSVHandler {
             String studentRecord;
 
             while ((studentRecord = csvReader.readLine()) != null) {
-//                Note: write logic for case when the first row is student data
+//                Todo: write logic for case when the first row is student data not header
                 if (firstRow) {
                     firstRow = false;
                 } else {
@@ -77,17 +82,20 @@ public class DefaultCSVHandler implements ICSVHandler {
                 }
             }
         } catch (IOException e) {
-            return new Response<>(false, e.getMessage(), null);
+            errorMsg = e.getMessage();
         } catch (Exception e){
+            errorMsg = e.getMessage();
             GlobalErrorHandler.handleException(e);
-            return new Response<>(false, e.getMessage(), null);
         }
 
-        return new Response<>(true, FILE_PATH + " loaded successfully", students);
+        return errorMsg != null
+            ? new Response<>(false, errorMsg, null)
+            : new Response<>(true, FILE_PATH + " loaded successfully", students);
     }
 
     @Override
-    public Response<Object> addStudentToCSV(Student student) {
+    public Response<Void> addStudentToCSV(Student student) {
+        String errorMsg;
         boolean fileExist = CSVHelpers.fileExist(FILE_PATH);
 
         try (var csvWriter = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
@@ -104,11 +112,13 @@ public class DefaultCSVHandler implements ICSVHandler {
 
             return new Response<>(true, "success", null);
         } catch (IOException e) {
-            return new Response<>(false, e.getMessage(), null);
+            errorMsg = e.getMessage();
         } catch (Exception e){
+            errorMsg = e.getMessage();
             GlobalErrorHandler.handleException(e);
-            return new Response<>(false, e.getMessage(), null);
         }
+
+        return new Response<>(false, errorMsg, null);
     }
 
     private String studentToCSVRow(Student student) {
@@ -119,7 +129,7 @@ public class DefaultCSVHandler implements ICSVHandler {
     }
 
     private Student csvToStudent(String studentDetails) {
-//        Note: should throw validation error
+//        Todo: should throw validation error
         if (!studentDetails.trim().isEmpty()) {
             String[] studentData = studentDetails.split(",");
             String studentID = studentData[0];

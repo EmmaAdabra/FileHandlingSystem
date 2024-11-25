@@ -12,11 +12,11 @@ import java.util.Optional;
 public interface IUserServices {
     boolean addUser(User user);
     List<User> getUsers();
-    Response<Objects> setCSVHandler(CSVHandlerType handlerType);
+    Response<Void> setCSVHandler(CSVHandlerType handlerType);
     List<Student> getStudents();
     boolean addStudent(Student newStudent);
     Optional<Student> getStudentByID(String id);
-    Response<Objects> updateStudentRecord();
+    Response<Void> updateStudentRecord();
     Map<Integer, Student> getStudentsByName(String name);
     boolean deleteStudent(String studentID);
 }

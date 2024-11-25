@@ -2,7 +2,6 @@ package repository;
 
 
 import infrastructure.DefaultCSVHandler;
-import infrastructure.ICSVHandler;
 import model.Student;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +34,7 @@ public class TestStudentRepository {
                 new Student("AJ001", "Ajayi", 24, "Neworking", 4.5),
                 new Student("EA002", "Emmanuel", 24, "programming", 4.5)
                 );
-        Response<Object> mockedResponse = new Response<>(true, "success", students);
+        Response<List<Student>> mockedResponse = new Response<>(true, "success", students);
 
         when(csvHandler.readStudentFromCSV()).thenReturn(mockedResponse);
 
@@ -52,7 +51,7 @@ public class TestStudentRepository {
     public void testLoadStudentsFromEmptyCSVToPopulatesRepository(){
 //        Arrange
         List<Student> students = Collections.emptyList();
-        Response<Object> mockedResponse = new Response<>(true, "success", students);
+        Response<List<Student>> mockedResponse = new Response<>(true, "success", students);
 
         when(csvHandler.readStudentFromCSV()).thenReturn(mockedResponse);
 
@@ -146,7 +145,7 @@ public class TestStudentRepository {
     public void testUpdateStudentRecord(){
 //        Arrange
         when(csvHandler.writeAllStudentsToCSV(anyList()))
-                .thenReturn(new Response<Object>(true, "success", null));
+                .thenReturn(new Response<>(true, "success", null));
 
 //        Act
         studentRepository.updateStudentRecord();

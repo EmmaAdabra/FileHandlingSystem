@@ -95,12 +95,12 @@ public class TestUserService {
     public void testSetCSVHandler_WithMainHandler() {
         // Arrange
         CSVHandlerType mockDefaultType = CSVHandlerType.DEFAULT;
-        Response<Object> mockResponse = new Response<>(true, "Students loaded successfully", null);
+        Response<Void> mockResponse = new Response<>(true, "Students loaded successfully", null);
         doNothing().when(studentRepository).setCSVHandler(any(ICSVHandler.class));
         when(studentRepository.LoadStudentsFromCSV()).thenReturn(mockResponse);
 
         // Act
-        Response<Object> response = userServices.setCSVHandler(mockDefaultType);
+        Response<Void> response = userServices.setCSVHandler(mockDefaultType);
 
         // Assert
         Assertions.assertNotNull(response);

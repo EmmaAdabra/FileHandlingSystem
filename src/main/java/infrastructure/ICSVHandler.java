@@ -6,7 +6,7 @@ import util.Response;
 import java.util.List;
 
 public interface ICSVHandler {
-    Response writeAllStudentsToCSV(List<Student> students);
-    Response readStudentFromCSV();
-    Response addStudentToCSV(Student student);
+    Response<Void> writeAllStudentsToCSV(List<Student> students);
+    Response<List<Student>> readStudentFromCSV();
+    Response<Void> addStudentToCSV(Student student);
 }

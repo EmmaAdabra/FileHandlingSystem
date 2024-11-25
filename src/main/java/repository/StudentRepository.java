@@ -6,7 +6,6 @@ import util.Response;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class StudentRepository implements IStudentRepository  {
@@ -15,16 +14,16 @@ public class StudentRepository implements IStudentRepository  {
     private final List<Student> students = new ArrayList<>();
 
     @Override
-    public Response<Object> LoadStudentsFromCSV() {
-        Response<Object> response = csvHandler.readStudentFromCSV();
+    public Response<Void> LoadStudentsFromCSV() {
+        Response<List<Student>> response = csvHandler.readStudentFromCSV();
 
         if(response.status) {
-//            Note: modify logic later
-            List<Student> studentRecords = (List<Student>) response.obj;
+//            Todo: modify logic later
+            List<Student> studentRecords = response.obj;
             students.addAll(studentRecords);
-            return new Response<Object>(true, response.message, null);
+            return new Response<>(true, response.message, null);
         }
-        return response;
+        return new Response<>(false, response.message, null);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class StudentRepository implements IStudentRepository  {
     }
 
     @Override
-    public Response<Object> updateStudentRecord() {
+    public Response<Void> updateStudentRecord() {
         return csvHandler.writeAllStudentsToCSV(students);
     }
 

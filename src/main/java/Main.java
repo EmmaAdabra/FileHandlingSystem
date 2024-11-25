@@ -14,7 +14,7 @@ public class Main {
         } catch (Exception e){
             GlobalErrorHandler.handleException(e);
             System.out.println();
-            System.out.println("!!! Alert: Programme shutting down, try again later");
+            System.out.println("!!! Alert: Programme shutting down, unknown error occur, try again later");
             System.exit(-1);
         }
     }
