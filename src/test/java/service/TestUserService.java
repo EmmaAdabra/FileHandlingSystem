@@ -95,17 +95,14 @@ public class TestUserService {
     public void testSetCSVHandler_WithMainHandler() {
         // Arrange
         CSVHandlerType mockDefaultType = CSVHandlerType.DEFAULT;
-        Response<Void> mockResponse = new Response<>(true, "Students loaded successfully", null);
         doNothing().when(studentRepository).setCSVHandler(any(ICSVHandler.class));
-        when(studentRepository.LoadStudentsFromCSV()).thenReturn(mockResponse);
 
         // Act
-        Response<Void> response = userServices.setCSVHandler(mockDefaultType);
+        boolean response = userServices.setCSVHandler(mockDefaultType);
 
         // Assert
-        Assertions.assertNotNull(response);
-        Assertions.assertTrue(response.status);
-        Assertions.assertEquals("Students loaded successfully", response.message);
+        Assertions.assertTrue(response);
+        verify(studentRepository, times(1)).setCSVHandler(any(ICSVHandler.class));
     }
 
     @Test
@@ -130,15 +127,15 @@ public class TestUserService {
     public void testAddNewStudent(){
 //        Arrange
         Student newStudent = new Student("AJ001", "Ajayi", 24, "Networking", 4.5);
-        when(studentRepository.isStudent(newStudent)).thenReturn(false);
-        doNothing().when(studentRepository).addStudent(newStudent);
+        when(studentRepository.isStudent(any(Student.class))).thenReturn(false);
+        doNothing().when(studentRepository).addStudent(any(Student.class), anyString());
 
 //      Act
-        boolean added = userServices.addStudent(newStudent);
+        boolean added = userServices.addStudent(newStudent, "csv/test_student.csv");
 
 //        Assert
         Assertions.assertTrue(added);
-        verify(studentRepository, times(1)).addStudent(newStudent);
+        verify(studentRepository, times(1)).addStudent(any(Student.class), anyString());
     }
 
     @Test
@@ -148,11 +145,11 @@ public class TestUserService {
         when(studentRepository.isStudent(student)).thenReturn(true);
 
 //        Act
-        boolean added = userServices.addStudent(student);
+        boolean added = userServices.addStudent(student,"csv/test_student.csv");
 
 //        Assert
         Assertions.assertFalse(added);
-        verify(studentRepository, times(0)).addStudent(student);
+        verify(studentRepository, times(0)).addStudent(any(Student.class), anyString());
     }
 
     @Test
