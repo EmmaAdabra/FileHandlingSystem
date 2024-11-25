@@ -46,6 +46,7 @@ public class UserServices implements IUserServices {
         if (csvHandler == null) {
             return new Response<>(false, "Invalid handler type: " + handlerType, null);
         }
+        studentRepository.setCSVHandler(csvHandler);
 
         return studentRepository.LoadStudentsFromCSV();
     }
