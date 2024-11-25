@@ -6,18 +6,18 @@ import util.Response;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 public interface IUserServices {
     boolean addUser(User user);
     List<User> getUsers();
-    Response<Void> setCSVHandler(CSVHandlerType handlerType);
+    boolean setCSVHandler(CSVHandlerType handlerType);
     List<Student> getStudents();
-    boolean addStudent(Student newStudent);
+    boolean addStudent(Student newStudent, String filePath);
     Optional<Student> getStudentByID(String id);
-    Response<Void> updateStudentRecord();
+    Response<Void> updateStudentRecord(String filePath);
     Map<Integer, Student> getStudentsByName(String name);
-    boolean deleteStudent(String studentID);
+    boolean deleteStudent(String studentID, String filePath);
+    Response<Void> loadStudentFromCSV(String filePath);
 }
 

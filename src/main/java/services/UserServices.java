@@ -40,15 +40,15 @@ public class UserServices implements IUserServices {
     }
 
     @Override
-    public Response<Void> setCSVHandler(CSVHandlerType handlerType) {
+    public boolean setCSVHandler(CSVHandlerType handlerType) {
         ICSVHandler csvHandler = CSVHandlerFactory.createCSVHandler(handlerType);
 
         if (csvHandler == null) {
-            return new Response<>(false, "Invalid handler type: " + handlerType, null);
+            return false;
         }
         studentRepository.setCSVHandler(csvHandler);
 
-        return studentRepository.LoadStudentsFromCSV();
+        return true;
     }
 
     @Override
@@ -58,9 +58,9 @@ public class UserServices implements IUserServices {
 
     @Override
 //    Todo: Modify, addStudent should return response
-    public boolean addStudent(Student newStudent) {
+    public boolean addStudent(Student newStudent, String filePath) {
         if(!studentRepository.isStudent(newStudent)) {
-            studentRepository.addStudent(newStudent);
+            studentRepository.addStudent(newStudent, filePath);
 
             return true;
         }
@@ -74,8 +74,8 @@ public class UserServices implements IUserServices {
     }
 
     @Override
-    public Response<Void> updateStudentRecord() {
-        return studentRepository.updateStudentRecord();
+    public Response<Void> updateStudentRecord(String filePath) {
+        return studentRepository.updateStudentRecord(filePath);
     }
 
     @Override
@@ -90,8 +90,13 @@ public class UserServices implements IUserServices {
     }
 
     @Override
-    public boolean deleteStudent(String studentID) {
-        return studentRepository.removeStudent(studentID);
+    public boolean deleteStudent(String studentID, String filePath) {
+        return studentRepository.removeStudent(studentID, filePath);
+    }
+
+    @Override
+    public Response<Void> loadStudentFromCSV(String filePath) {
+        return studentRepository.LoadStudentsFromCSV(filePath);
     }
 }
 

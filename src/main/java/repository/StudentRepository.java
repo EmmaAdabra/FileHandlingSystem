@@ -14,8 +14,8 @@ public class StudentRepository implements IStudentRepository  {
     private final List<Student> students = new ArrayList<>();
 
     @Override
-    public Response<Void> LoadStudentsFromCSV() {
-        Response<List<Student>> response = csvHandler.readStudentFromCSV();
+    public Response<Void> LoadStudentsFromCSV(String filePath) {
+        Response<List<Student>> response = csvHandler.readStudentFromCSV(filePath);
 
         if(response.status) {
 //            Todo: modify logic later
@@ -32,10 +32,10 @@ public class StudentRepository implements IStudentRepository  {
     }
 
     @Override
-//    Note: Modify, addStudent should return response a
-    public void addStudent(Student student) {
+//    Todo: Modify, addStudent should return response a
+    public void addStudent(Student student, String filePath) {
         students.add(student);
-        csvHandler.addStudentToCSV(student);
+        csvHandler.addStudentToCSV(student, filePath);
     }
 
     @Override
@@ -49,8 +49,8 @@ public class StudentRepository implements IStudentRepository  {
     }
 
     @Override
-    public Response<Void> updateStudentRecord() {
-        return csvHandler.writeAllStudentsToCSV(students);
+    public Response<Void> updateStudentRecord(String filePath) {
+        return csvHandler.writeAllStudentsToCSV(students, filePath);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class StudentRepository implements IStudentRepository  {
     }
 
     @Override
-    public boolean removeStudent(String id) {
+    public boolean removeStudent(String id, String filePath) {
         var student = getStudentByID(id);
 
         if(student.isEmpty()){
@@ -69,7 +69,7 @@ public class StudentRepository implements IStudentRepository  {
         boolean deleted = students.removeIf(stud -> stud.getId().equals(id));
 
         if(deleted) {
-            updateStudentRecord();
+            updateStudentRecord(filePath);
             return true;
         }
 

@@ -16,15 +16,18 @@ import java.util.List;
 
 
 public class UserController {
-    User currentUSer;
-    ValidateUserInput validate;
-    IUserServices userServices;
-    ActionProvider actionProvider;
+    private User currentUSer;
+    final private ValidateUserInput validate;
+    final private IUserServices userServices;
+    final private ActionProvider actionProvider;
+
+    private String  studentCsvFilePath;
 
     public UserController(ValidateUserInput validate, IUserRepository userRepository) {
         this.validate = validate;
         this.userServices = new UserServices(userRepository);
         this.actionProvider = new ActionProvider();
+        setStudentCsvFilePath("csv/students.csv");
     }
 
     public void signUp(){
@@ -69,10 +72,9 @@ public class UserController {
     }
 
     protected boolean chooseCSVHandler(){
-        try {
+            boolean setCsvHandler = false;
             boolean csvHandlerNotSelected = true;
-            Response<Void> response = null;
-
+        try {
             while (csvHandlerNotSelected) {
                 System.out.println();
                 System.out.println("--------------- Choose CSV Handler ---------------");
@@ -82,7 +84,7 @@ public class UserController {
                 int option = IterateInput.intInput("Option", 1, 2, validate::validateUserOption);
                 switch (option) {
                     case 1 -> {
-                        response = userServices.setCSVHandler(CSVHandlerType.DEFAULT);
+                        setCsvHandler = userServices.setCSVHandler(CSVHandlerType.DEFAULT);
                         csvHandlerNotSelected = false;
                     }
                     case 2 -> {
@@ -91,28 +93,14 @@ public class UserController {
                     }
                 }
 
-//            Todo: modify logic later
-                if(response != null) {
-                    if(response.status) {
-                        System.out.println();
-                        System.out.println(response.message);
-                    }
-                    else {
-                        System.out.println();
-                        System.out.println("Error occur loading students csv file:\n" + response.message);
-                        int opt = chooseCSVHandlerHelper();
-
-                        switch (opt){
-                            case 1 -> {return false;}
-                            case 2 -> csvHandlerNotSelected = true;
-                        }
-                    }
-                } else {
-                    if (response == null && !csvHandlerNotSelected) {
-                        System.out.println();
-                        System.out.println("Unknown error occur, unable to initialized CSV handler");
-                        System.exit(-1);
-                    }
+                if(setCsvHandler) {
+                    loadStudentCSV();
+                    return true;
+                }
+                if(!setCsvHandler && !csvHandlerNotSelected){
+                    System.out.println();
+                    System.out.println("Unknown error occur, unable to initialized CSV handler");
+                    System.exit(-1);
                 }
             }
         } catch (Exception e){
@@ -120,15 +108,37 @@ public class UserController {
             System.exit(-1);
         }
 
-        return true;
+        return false;
     }
 
-    private int chooseCSVHandlerHelper(){
-        System.out.println();
-        System.out.println("1. Exit Program");
-        System.out.println("2. Try Again");
+//    private int chooseCSVHandlerHelper(){
+//        System.out.println();
+//        System.out.println("1. Exit Program");
+//        System.out.println("2. Try Again");
+//
+//        return  IterateInput.intInput("Option", 1, 2, validate::validateUserOption);
+//    }
 
-        return  IterateInput.intInput("Option", 1, 2, validate::validateUserOption);
+    private void loadStudentCSV(){
+       var loadStudentCsvResponse = userServices.loadStudentFromCSV(studentCsvFilePath);
+
+       if(!loadStudentCsvResponse.status){
+           System.out.println();
+           System.out.println(loadStudentCsvResponse.message);
+           System.out.println();
+           System.out.println("Do you want to try again, perhaps with a different handler?");
+           System.out.println("1. Yes");
+           System.out.println("0. No (Quit program)");
+           System.out.println();
+
+           int option = IterateInput.intInput("Option", 0, 1, validate::validateUserOption);
+
+           Runnable action = option == 1 ? this::chooseCSVHandler : () -> System.exit(-1);
+           action.run();
+       }
+
+        System.out.println();
+        System.out.println(loadStudentCsvResponse.message);
     }
 
     protected void displayMenu(){
@@ -196,7 +206,7 @@ public class UserController {
         System.out.println();
 
 //        Todo: Modify, addStudent should return response and response status should be checked
-        if(userServices.addStudent(newStudent)){
+        if(userServices.addStudent(newStudent, studentCsvFilePath)){
             System.out.println("Student added successfully");
             TrackNumberOfRegisteredStudent.incrementStudentCount();
         }
@@ -264,7 +274,7 @@ public class UserController {
                 }
 
                 case 5 -> {
-                    var response = userServices.updateStudentRecord();
+                    var response = userServices.updateStudentRecord(studentCsvFilePath);
                     if(!response.status) {
                         System.out.println(response.message);
                     }
@@ -344,10 +354,14 @@ public class UserController {
 
     private void deleteStudentByID(String id){
         System.out.println();
-        if(userServices.deleteStudent(id)) {
+        if(userServices.deleteStudent(id, studentCsvFilePath)) {
             System.out.println("Student with ID: " + id + " deleted successfully");
         } else {
             System.out.println("No student with ID: " + id);
         }
+    }
+
+    public void setStudentCsvFilePath(String studentCsvFilePath) {
+        this.studentCsvFilePath = studentCsvFilePath;
     }
 }
