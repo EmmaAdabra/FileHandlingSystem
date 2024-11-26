@@ -1,7 +1,7 @@
 package infrastructure;
 
 import model.Student;
-import org.junit.Assert;
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,8 +26,8 @@ public class TestCSVHandler {
     @Test
      public void testReadStudentFromCSV() throws IOException {
 //        Arrange
-        File tempFile = Files.createTempFile("testStudent", ".csv").toFile();
-        tempFile.deleteOnExit();
+        File tempFile = Files.createTempFile("test_tudent", ".csv").toFile();
+        FileUtils.forceDeleteOnExit(tempFile);
 
         try(FileWriter writer = new FileWriter(tempFile)) {
             writer.write("ID,Name,Age,Department,GPA\n");
@@ -47,5 +47,44 @@ public class TestCSVHandler {
         Assertions.assertTrue(response.status);
         Assertions.assertEquals(2, students.size());
         Assertions.assertEquals("AJ001", students.get(0).getId());
+        Assertions.assertEquals("Emmanuel", students.get(1).getName());
+    }
+
+    @Test
+    public void testWriteAllStudentsToCSV() throws IOException{
+//        Arrange
+        File tempFile = Files.createTempFile("test_student", ".csv").toFile();
+//        FileUtils.forceDeleteOnExit(tempFile);
+
+        List<Student> students = List.of(
+                new Student("AJ001", "Ajayi", 24, "Neworking", 4.5),
+                new Student("EA002", "Emmanuel", 24, "programming", 4.5)
+        );
+
+//        Act
+        Response<Void> response = csvHandler.writeAllStudentsToCSV(students, tempFile.getAbsolutePath());
+
+//        Assert
+        Assertions.assertTrue(response.status);
+        Assertions.assertEquals("success", response.message);
+    }
+
+    @Test
+    public void testAddStudent() throws IOException{
+//        Arrange
+        File tempFile = Files.createTempFile("test_student", ".csv").toFile();
+        try(MockedStatic<CSVHelpers> mockCSVHandler = mockStatic(CSVHelpers.class)){
+            mockCSVHandler.when(() -> CSVHelpers.fileExist(anyString())).thenReturn(true);
+            mockCSVHandler.when(() -> CSVHelpers.isEmpty(anyString())).thenReturn(true);
+        }
+
+        var mockStudent = new Student("EA002", "Emmanuel Adabra", 24, "programming", 4.5);
+
+//        Act
+        var response = csvHandler.addStudentToCSV(mockStudent, tempFile.getAbsolutePath());
+
+//        Assert
+        Assertions.assertTrue(response.status);
+        Assertions.assertEquals("success", response.message);
     }
 }
